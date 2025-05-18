@@ -5,17 +5,16 @@ dotenv.config();
 
 const resend = new Resend(process.env.RESEND_API_KEY);  // Replace with your actual API key
 
-// Function to send an email
-export const sendMessagetoEmail = async () => {
+export const sendMessagetoEmail = async (toEmail: string, content: string) => {
     try {
         const response = await resend.emails.send({
             from: 'onboarding@resend.dev', // Must use a verified domain or the default Resend sender
-            to: 'igorkuzmenko0412@gmail.com',
-            subject: 'Hello from Node.js!',
-            html: '<p>Hey there! 👋<br>This message was sent from Node.js using Resend API.</p>'
+            to: toEmail,
+            subject: "Congratulations!",
+            html: '<p>Hey there! 👋<br>You received a new NFT.</p><a href="' + content + '">View NFT</a>'
         });
 
-        console.log('✅ Email sent successfully:', response);
+        console.log('3️⃣ Email sent successfully');
     } catch (error) {
         console.error('❌ Failed to send email:', error);
     }

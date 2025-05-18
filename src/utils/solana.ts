@@ -22,14 +22,13 @@ export const mintNFT = async (metadata: any) => {
         await createNft(umi, {
             mint,
             name: metadata.name,
-            symbol: metadata.symbol,
+            symbol: metadata.currency,
             uri,
             updateAuthority: umi.identity.publicKey,
             sellerFeeBasisPoints: percentAmount(0),
         }).sendAndConfirm(umi, { send: { commitment: "finalized" } });
 
-        console.log("🚀NFT minted successfully!");
-        console.log(`https://solscan.io/token/${mint.publicKey}?cluster=devnet`);
+        console.log("1️⃣ NFT minted successfully!");
         return mint.publicKey;
     } catch (error) {
         console.error("ERROR------> NFT minting failed", error);
@@ -56,7 +55,7 @@ export const burnNFT = async (privateKey: string, mintAddress: string) => {
         }).sendAndConfirm(umi, {
             send: { commitment: "finalized" }
         });
-        console.log("🔥NFT burned successfully!");
+        console.log("✅ NFT burned successfully!");
     } catch (error: any) {
         const errorMessage = error.message || "Unknown error occurred while burning NFT";
         console.error("ERROR------> NFT burning failed:", errorMessage);
@@ -78,10 +77,11 @@ export const transferNFT = async (mintAddress: string, toAddress: string) => {
         }).sendAndConfirm(umi, {
             send: { commitment: "finalized" }
         });
-        console.log("🔄NFT transferred successfully!");
+        console.log("2️⃣ NFT transferred successfully!");
+        return true;
     } catch (error: any) {
         const errorMessage = error.message || "Unknown error occurred while transferring NFT";
         console.error("ERROR------> NFT transferring failed:", errorMessage);
-        return { success: false, error: errorMessage };
+        return false;
     }
 }

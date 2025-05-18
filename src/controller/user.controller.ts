@@ -5,10 +5,14 @@ export const UserController = {
     addUser: async (req: Request, res: Response) => {
         try {
             const { email, walletAddress } = req.body;
-            const result = await UserService.addUser(email, walletAddress);
-            console.log('🚀 ~ addUser ~ result:', result);
-            result === null ? res.status(400).json({ message: 'User Add failed' })
-                : res.status(200).json({ message: 'User added successfully' });
+            const existUSer = await UserService.getUserByEmail(email);
+            if (!existUSer || existUSer.length === 0) {
+                const result = await UserService.addUser(email, walletAddress);
+                result === null ? res.status(400).json({ message: 'User Add failed' })
+                    : res.status(200).json({ message: 'User added successfully' });
+            } else {
+                res.status(200).json({ message: 'User already exists' });
+            }
         } catch (error) {
             console.error('❌ Error adding user:', error);
             res.status(500).json({ error: 'Failed to add user' });

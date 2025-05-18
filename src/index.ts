@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.raw());
 
-app.use('/', router);
+app.use('/api', router);
 SupabaseConnection();
 
 app.listen(port, () => {
