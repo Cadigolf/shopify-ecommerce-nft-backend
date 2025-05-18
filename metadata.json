@@ -1,0 +1,49 @@
+{
+    "name": "Limited Edition Black Hoodie",
+    "symbol": "HOODIE",
+    "description": "This NFT represents a limited edition black hoodie purchased from BrandX. Edition: 1st Drop.",
+    "seller_fee_basis_points": 500,
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWq5MFzuuV-Nc8TNl5k5VEo33kdFxEVYfcPNruDJLOtQR5cDaMfxt3Ve0&s",
+    "external_url": "https://brandx.shop/products/hoodie-black",
+    "attributes": [
+        {
+            "trait_type": "Edition",
+            "value": "1st Drop"
+        },
+        {
+            "trait_type": "Size",
+            "value": "Medium"
+        },
+        {
+            "trait_type": "Material",
+            "value": "Organic Cotton"
+        },
+        {
+            "trait_type": "Color",
+            "value": "Black"
+        },
+        {
+            "trait_type": "Order ID",
+            "value": "1001234567"
+        }
+    ],
+    "collection": {
+        "name": "Winter 2025 Collection",
+        "family": "BrandX Apparel"
+    },
+    "properties": {
+        "files": [
+            {
+                "uri": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWq5MFzuuV-Nc8TNl5k5VEo33kdFxEVYfcPNruDJLOtQR5cDaMfxt3Ve0&s",
+                "type": "image/png"
+            }
+        ],
+        "category": "image",
+        "creators": [
+            {
+                "address": "3v...yourMerchantSolanaAddress...ZY",
+                "share": 100
+            }
+        ]
+    }
+}
