@@ -3,6 +3,8 @@ import { mplTokenMetadata, createNft, burnV1, TokenStandard, transferV1 } from "
 import { keypairIdentity, percentAmount, generateSigner, publicKey } from "@metaplex-foundation/umi";
 import bs58 from "bs58";
 import { mockStorage } from "@metaplex-foundation/umi-storage-mock";
+import { Connection, PublicKey } from "@solana/web3.js";
+
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -14,24 +16,48 @@ umi.use(keypairIdentity(umiKeypair))
     .use(mplTokenMetadata())
     .use(mockStorage());
 
+const connection = new Connection(solanaRpcUrl || "");
+// Minimum SOL required for NFT minting (0.02 SOL to be safe)
+// const MIN_SOL_REQUIRED = 0.02;
 
-export const mintNFT = async (metadata: any) => {
+export const createWallet = async () => {
+    const wallet = generateSigner(umi);
+    return { publicKey: wallet.publicKey.toString(), privateKey: bs58.encode(wallet.secretKey) };
+}
+
+export const mintNFT = async (metadata: any): Promise<string> => {
     try {
         const mint = generateSigner(umi);
         const uri = await umi.uploader.uploadJson(metadata);
         await createNft(umi, {
             mint,
             name: metadata.name,
-            symbol: metadata.currency,
+            symbol: metadata.symbol,
             uri,
             updateAuthority: umi.identity.publicKey,
             sellerFeeBasisPoints: percentAmount(0),
-        }).sendAndConfirm(umi, { send: { commitment: "finalized" } });
+            creators: [
+                {
+                    address: umi.identity.publicKey,
+                    verified: true,
+                    share: 100,
+                }
+            ],
+            collection: null,
+            uses: null,
+        }).sendAndConfirm(umi, {
+            send: {
+                commitment: "finalized",
+                preflightCommitment: "confirmed"
+            }
+        });
 
         console.log("1️⃣ NFT minted successfully!");
-        return mint.publicKey;
-    } catch (error) {
-        console.error("ERROR------> NFT minting failed", error);
+        return mint.publicKey.toString()
+    } catch (error: any) {
+        const errorMessage = error.message || "Unknown error occurred while minting NFT";
+        console.error("ERROR------> NFT minting failed:", errorMessage);
+        return "false";
     }
 }
 
@@ -67,7 +93,6 @@ export const transferNFT = async (mintAddress: string, toAddress: string) => {
     try {
         const mint = publicKey(mintAddress);
         const to = publicKey(toAddress);
-
         await transferV1(umi, {
             mint,
             authority: umi.identity,

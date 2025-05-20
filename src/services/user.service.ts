@@ -23,9 +23,9 @@ const UserService = {
             return null;
         }
     },
-    addUser: async (email: string, walletAddress: string) => {
+    addUser: async (email: string, walletAddress: string, privateKey: string) => {
         try {
-            const { data, error } = await supabase.from('users').insert({ email, walletAddress });
+            const { data, error } = await supabase.from('users').insert({ email, walletAddress, privateKey });
             if (error) {
                 console.error('❌ Error adding user:', error);
                 return null;

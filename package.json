@@ -12,11 +12,14 @@
   "description": "",
   "devDependencies": {
     "@types/cors": "^2.8.18",
+    "@types/nodemailer": "^6.4.17",
     "nodemon": "^3.1.10",
+    "prisma": "^6.8.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   },
   "dependencies": {
+    "@metaplex-foundation/js": "^0.20.1",
     "@metaplex-foundation/mpl-token-metadata": "^3.4.0",
     "@metaplex-foundation/umi-bundle-defaults": "^1.2.0",
     "@metaplex-foundation/umi-storage-mock": "^1.2.0",

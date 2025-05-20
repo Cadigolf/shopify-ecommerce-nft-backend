@@ -4,10 +4,10 @@ import UserService from '../services/user.service';
 export const UserController = {
     addUser: async (req: Request, res: Response) => {
         try {
-            const { email, walletAddress } = req.body;
+            const { email, walletAddress, privateKey } = req.body;
             const existUSer = await UserService.getUserByEmail(email);
             if (!existUSer || existUSer.length === 0) {
-                const result = await UserService.addUser(email, walletAddress);
+                const result = await UserService.addUser(email, walletAddress, privateKey);
                 result === null ? res.status(400).json({ message: 'User Add failed' })
                     : res.status(200).json({ message: 'User added successfully' });
             } else {
