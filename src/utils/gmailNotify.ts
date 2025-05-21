@@ -17,7 +17,6 @@ const transporter = nodemailer.createTransport({
 export const sendMessagetoEmail = async (toEmail: string, content: string, walletAddress: string) => {
     try {
         await transporter.verify();
-        console.log('Sending email to:', toEmail);
         const mailOptions = {
             from: process.env.MANAGER_GMAIL,
             to: toEmail,
@@ -25,6 +24,7 @@ export const sendMessagetoEmail = async (toEmail: string, content: string, walle
             html: `<p>Hey there! 👋<br><a href="${content}">You received a new NFT.</a><br>Your wallet address: ${walletAddress}</p>`
         };
         await transporter.sendMail(mailOptions);
+        console.log('3️⃣ Email sent successfully:', toEmail);
     } catch (error: any) {
         console.error('❌ Failed to send email. Detailed error:', {
             message: error.message,
