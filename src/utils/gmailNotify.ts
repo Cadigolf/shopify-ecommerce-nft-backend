@@ -14,17 +14,17 @@ const transporter = nodemailer.createTransport({
     },
 });
 
-export const sendMessagetoEmail = async (toEmail: string, content: string) => {
+export const sendMessagetoEmail = async (toEmail: string, content: string, walletAddress: string) => {
     try {
         await transporter.verify();
+        console.log('Sending email to:', toEmail);
         const mailOptions = {
             from: process.env.MANAGER_GMAIL,
             to: toEmail,
             subject: 'Congratulations!',
-            html: `<p>Hey there! 👋<br><a href="${content}">You received a new NFT.</a></p>`
+            html: `<p>Hey there! 👋<br><a href="${content}">You received a new NFT.</a><br>Your wallet address: ${walletAddress}</p>`
         };
-
-        const info = await transporter.sendMail(mailOptions);
+        await transporter.sendMail(mailOptions);
     } catch (error: any) {
         console.error('❌ Failed to send email. Detailed error:', {
             message: error.message,
@@ -33,7 +33,7 @@ export const sendMessagetoEmail = async (toEmail: string, content: string) => {
             responseCode: error.responseCode,
             response: error.response
         });
-        
+
         // Check for specific error types
         if (error.code === 'ETIMEDOUT') {
             throw new Error('Connection timed out. Please check your internet connection and firewall settings.');
@@ -42,7 +42,7 @@ export const sendMessagetoEmail = async (toEmail: string, content: string) => {
         } else if (error.code === 'ESOCKET') {
             throw new Error('Socket error. Please check your network connection and firewall settings.');
         }
-        
+
         throw new Error(`Email sending failed: ${error.message}`);
     }
 }

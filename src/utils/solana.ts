@@ -28,21 +28,27 @@ export const createWallet = async () => {
 export const mintNFT = async (metadata: any): Promise<string> => {
     try {
         const mint = generateSigner(umi);
-        const uri = await umi.uploader.uploadJson(metadata);
-        await createNft(umi, {
-            mint,
-            name: metadata.name,
+
+        const minimalMetadata = {
+            name: metadata.title,
             symbol: metadata.symbol,
-            uri,
-            updateAuthority: umi.identity.publicKey,
+            description: metadata.description?.substring(0, 100),
+        };
+        // Create shorter URI
+        const metadataUri = `data:application/json;base64,${Buffer.from(JSON.stringify(minimalMetadata)).toString('base64')}`;
+
+        const nft = await createNft(umi, {
+            mint,
+            name: metadata.title,
+            symbol: metadata.symbol,
+            uri: metadataUri,
             sellerFeeBasisPoints: percentAmount(0),
-            creators: [
-                {
+            isMutable: true,
+            creators: [{
                     address: umi.identity.publicKey,
                     verified: true,
                     share: 100,
-                }
-            ],
+                }],
             collection: null,
             uses: null,
         }).sendAndConfirm(umi, {
