@@ -30,7 +30,7 @@ export const buyProductController = async (req: Request, res: Response) => {
                     } else {
                         res.status(400).json({ message: 'Failed to transfer NFT' });
                     }
-                }, 10000);
+                }, 15000);
             } else {
                 res.status(400).json({ message: 'Failed to mint NFT' });
             }
