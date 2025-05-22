@@ -4,6 +4,7 @@ import { keypairIdentity, percentAmount, generateSigner, publicKey } from "@meta
 import bs58 from "bs58";
 import { mockStorage } from "@metaplex-foundation/umi-storage-mock";
 import { Connection, PublicKey } from "@solana/web3.js";
+import axios from "axios";
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -11,6 +12,10 @@ dotenv.config();
 const solanaRpcUrl = process.env.SOLANA_RPC_URL;
 const umi = createUmi(solanaRpcUrl || "");
 const privateKey = process.env.SOLANA_WALLET_PRIVATEKEY;
+
+const pinataApiKey = process.env.PINATA_API_KEY;
+const pinataSecretApiKey = process.env.PINATA_SECRET_API_KEY;
+
 const umiKeypair = umi.eddsa.createKeypairFromSecretKey(bs58.decode(privateKey || ""));
 umi.use(keypairIdentity(umiKeypair))
     .use(mplTokenMetadata())
@@ -25,30 +30,63 @@ export const createWallet = async () => {
     return { publicKey: wallet.publicKey.toString(), privateKey: bs58.encode(wallet.secretKey) };
 }
 
+async function uploadMetadataToPinata(metadata: any): Promise<string> {
+    try {
+        const res = await fetch("https://api.pinata.cloud/pinning/pinJSONToIPFS", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'pinata_api_key': pinataApiKey || '',
+                'pinata_secret_api_key': pinataSecretApiKey || '',
+            },
+            body: JSON.stringify(metadata)
+        });
+        const data = await res.json();
+        const ipfsHash = data.IpfsHash;
+        return ipfsHash;
+    } catch (error) {
+        console.error("ERROR------> NFT minting failed:", error);
+        return "false";
+    }
+}
+
 export const mintNFT = async (metadata: any): Promise<string> => {
     try {
         const mint = generateSigner(umi);
-
         const minimalMetadata = {
             name: metadata.title,
+            description: metadata.description,
             symbol: metadata.symbol,
-            description: metadata.description?.substring(0, 100),
-        };
-        // Create shorter URI
-        const metadataUri = `data:application/json;base64,${Buffer.from(JSON.stringify(minimalMetadata)).toString('base64')}`;
+            price: metadata.price,
+            image: metadata.image,
+            attributes: [
+                {
+                    trait_type: "price",
+                    value: metadata.price
+                },
+                {
+                    trait_type: "quantity",
+                    value: metadata.quantity
+                },
 
-        const nft = await createNft(umi, {
+            ],
+        };
+
+        const metadataHash = await uploadMetadataToPinata(minimalMetadata);
+        let metadataUrl = `https://ipfs.io/ipfs/${metadataHash}`;
+
+        await createNft(umi, {
             mint,
             name: metadata.title,
             symbol: metadata.symbol,
-            uri: metadataUri,
+            uri: metadataUrl,
             sellerFeeBasisPoints: percentAmount(0),
             isMutable: true,
             creators: [{
-                    address: umi.identity.publicKey,
-                    verified: true,
-                    share: 100,
-                }],
+                address: umi.identity.publicKey,
+                verified: true,
+                share: 100,
+            }],
             collection: null,
             uses: null,
         }).sendAndConfirm(umi, {
@@ -57,12 +95,10 @@ export const mintNFT = async (metadata: any): Promise<string> => {
                 preflightCommitment: "confirmed"
             }
         });
-
         console.log("1️⃣ NFT minted successfully!");
         return mint.publicKey.toString()
     } catch (error: any) {
-        const errorMessage = error.message || "Unknown error occurred while minting NFT";
-        console.error("ERROR------> NFT minting failed:", errorMessage);
+        console.error("ERROR------> NFT minting failed:", error);
         return "false";
     }
 }
