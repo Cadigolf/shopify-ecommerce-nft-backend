@@ -9,7 +9,7 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 1001;
 const corsOptions = {
-    origin: ['https://pvh1vs-tk.myshopify.com', 'http://localhost:1001'], // Add your Shopify store URL and local development URL
+    origin: '*', // Allow all origins
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'FETCH'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
