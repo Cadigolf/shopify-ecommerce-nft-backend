@@ -30,10 +30,11 @@ app.use('/api', router);
 // });
 
 app.post('/webhooks/orders/create', express.raw({ type: 'application/json' }), (req, res) => {
+    console.log("First result", req.body);
     const rawBody = req.body.toString('utf8');
-    console.log("🔴🔴🔴", rawBody);
+    console.log("Second result", rawBody);
     // const orderData = JSON.parse(rawBody);
-
+    // console.log("Third result", orderData);
     const products = rawBody.line_items.map((item: any) => ({
         name: item.title,
         price: item.price,
