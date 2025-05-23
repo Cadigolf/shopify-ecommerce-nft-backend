@@ -22,6 +22,13 @@ app.use(express.json());
 app.use(express.raw());
 
 app.use('/api', router);
+
+app.post('/webhooks/orders/create', express.json(), (req, res) => {
+    const orderData = req.body;
+    console.log('New Order:', orderData);
+    res.status(200).send('Webhook received');
+});
+
 SupabaseConnection();
 
 app.listen(port, () => {
