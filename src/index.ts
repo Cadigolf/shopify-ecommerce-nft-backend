@@ -23,9 +23,26 @@ app.use(express.raw());
 
 app.use('/api', router);
 
-app.post('/webhooks/orders/create', express.json(), (req, res) => {
-    const orderData = req.body;
-    console.log('New Order:', orderData);
+// app.post('/webhooks/orders/create', express.json(), (req, res) => {
+//     const orderData = req.body;
+//     console.log('New Order:', orderData);
+//     res.status(200).send('Webhook received');
+// });
+
+app.post('/webhooks/orders/create', express.raw({ type: 'application/json' }), (req, res) => {
+    const rawBody = req.body.toString('utf8');
+    const orderData = JSON.parse(rawBody);
+
+    const products = orderData.line_items.map((item: any) => ({
+        name: item.title,
+        price: item.price,
+        quantity: item.quantity,
+        image: item.image ? item.image.src : null,  // May be null
+        product_id: item.product_id,
+        variant_id: item.variant_id
+    }));
+
+    console.log("✔️✔️✔️", products);
     res.status(200).send('Webhook received');
 });
 
