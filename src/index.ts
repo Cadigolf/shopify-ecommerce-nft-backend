@@ -31,9 +31,10 @@ app.use('/api', router);
 
 app.post('/webhooks/orders/create', express.raw({ type: 'application/json' }), (req, res) => {
     const rawBody = req.body.toString('utf8');
-    const orderData = JSON.parse(rawBody);
+    console.log("🔴🔴🔴", rawBody);
+    // const orderData = JSON.parse(rawBody);
 
-    const products = orderData.line_items.map((item: any) => ({
+    const products = rawBody.line_items.map((item: any) => ({
         name: item.title,
         price: item.price,
         quantity: item.quantity,
