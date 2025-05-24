@@ -61,10 +61,6 @@ export const mintNFT = async (metadata: any): Promise<string> => {
             image: metadata.image,
             attributes: [
                 {
-                    trait_type: "price",
-                    value: metadata.price
-                },
-                {
                     trait_type: "quantity",
                     value: metadata.quantity
                 },

@@ -1,231 +1,158 @@
 {
-  "id": 820982911946154508,
-  "admin_graphql_api_id": "gid://shopify/Order/820982911946154508",
-  "app_id": null,
-  "browser_ip": null,
-  "buyer_accepts_marketing": true,
-  "cancel_reason": "customer",
-  "cancelled_at": "2021-12-31T19:00:00-05:00",
-  "cart_token": null,
-  "checkout_id": null,
-  "checkout_token": null,
-  "client_details": null,
+  "id": 5675980390434,
+  "admin_graphql_api_id": "gid://shopify/Order/5675980390434",
+  "app_id": 580111,
+  "browser_ip": "67.43.53.10",
+  "buyer_accepts_marketing": false,
+  "cancel_reason": null,
+  "cancelled_at": null,
+  "cart_token": "Z2NwLXVzLWVhc3QxOjAxSlcyMzFKQzE1QzNUTjEwTjRXUFRHMUNB",
+  "checkout_id": 37657751257122,
+  "checkout_token": "ea4d5ac33652771a435bea0e3d569615",
+  "client_details": {
+    "accept_language": "en-US",
+    "browser_height": null,
+    "browser_ip": "67.43.53.10",
+    "browser_width": null,
+    "session_hash": null,
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
+  },
   "closed_at": null,
-  "confirmation_number": null,
-  "confirmed": false,
-  "contact_email": "jon@example.com",
-  "created_at": "2021-12-31T19:00:00-05:00",
+  "company": null,
+  "confirmation_number": "8GC15MJTD",
+  "confirmed": true,
+  "contact_email": "renan.work32@gmail.com",
+  "created_at": "2025-05-24T17:26:53-04:00",
   "currency": "USD",
   "current_shipping_price_set": {
-    "shop_money": {
-      "amount": "0.00",
-      "currency_code": "USD"
-    },
-    "presentment_money": {
-      "amount": "0.00",
-      "currency_code": "USD"
-    }
+    "shop_money": { "amount": "0.00", "currency_code": "USD" },
+    "presentment_money": { "amount": "0.00", "currency_code": "USD" }
   },
-  "current_subtotal_price": "369.97",
+  "current_subtotal_price": "10.00",
   "current_subtotal_price_set": {
-    "shop_money": {
-      "amount": "369.97",
-      "currency_code": "USD"
-    },
-    "presentment_money": {
-      "amount": "369.97",
-      "currency_code": "USD"
-    }
+    "shop_money": { "amount": "10.00", "currency_code": "USD" },
+    "presentment_money": { "amount": "10.00", "currency_code": "USD" }
   },
   "current_total_additional_fees_set": null,
   "current_total_discounts": "0.00",
   "current_total_discounts_set": {
-    "shop_money": {
-      "amount": "0.00",
-      "currency_code": "USD"
-    },
-    "presentment_money": {
-      "amount": "0.00",
-      "currency_code": "USD"
-    }
+    "shop_money": { "amount": "0.00", "currency_code": "USD" },
+    "presentment_money": { "amount": "0.00", "currency_code": "USD" }
   },
   "current_total_duties_set": null,
-  "current_total_price": "369.97",
+  "current_total_price": "10.00",
   "current_total_price_set": {
-    "shop_money": {
-      "amount": "369.97",
-      "currency_code": "USD"
-    },
-    "presentment_money": {
-      "amount": "369.97",
-      "currency_code": "USD"
-    }
+    "shop_money": { "amount": "10.00", "currency_code": "USD" },
+    "presentment_money": { "amount": "10.00", "currency_code": "USD" }
   },
   "current_total_tax": "0.00",
   "current_total_tax_set": {
-    "shop_money": {
-      "amount": "0.00",
-      "currency_code": "USD"
-    },
-    "presentment_money": {
-      "amount": "0.00",
-      "currency_code": "USD"
-    }
+    "shop_money": { "amount": "0.00", "currency_code": "USD" },
+    "presentment_money": { "amount": "0.00", "currency_code": "USD" }
   },
-  "customer_locale": "en",
+  "customer_locale": "en-US",
   "device_id": null,
   "discount_codes": [],
   "duties_included": false,
-  "email": "jon@example.com",
+  "email": "renan.work32@gmail.com",
   "estimated_taxes": false,
-  "financial_status": "voided",
+  "financial_status": "paid",
   "fulfillment_status": null,
-  "landing_site": null,
+  "landing_site": "/?_bt=eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaUJ6YjJ4aGJtRXRjMmh2Y0dsbUxtMTVjMmh2Y0dsbWVTNWpiMjBHT2daRlZBPT0iLCJleHAiOiIyMDI1LTA1LTIyVDIwOjU1OjU4LjAyNloiLCJwdXIiOiJwZXJtYW5lbnRfcGFzc3dvcmRfYnlwYXNzIn19--23ce5cdb999322b57d7e589b6382fe3582d6b4d6",
   "landing_site_ref": null,
   "location_id": null,
-  "merchant_business_entity_id": "MTU0ODM4MDAwOQ",
+  "merchant_business_entity_id": "MTgwMjMwMzUwODgy",
   "merchant_of_record_app_id": null,
-  "name": "#9999",
+  "name": "#1014",
   "note": null,
   "note_attributes": [],
-  "number": 234,
-  "order_number": 1234,
-  "order_status_url": "https://jsmith.myshopify.com/548380009/orders/123456abcd/authenticate?key=abcdefg",
+  "number": 14,
+  "order_number": 1014,
+  "order_status_url": "https://solana-shopif.myshopify.com/80230350882/orders/a462b6789a0799e1bfd007b59da10547/authenticate?key=397c1a19c680577b7bc47a15177bb432",
   "original_total_additional_fees_set": null,
   "original_total_duties_set": null,
-  "payment_gateway_names": [
-    "visa",
-    "bogus"
-  ],
+  "payment_gateway_names": [ "bogus" ],
   "phone": null,
   "po_number": null,
   "presentment_currency": "USD",
-  "processed_at": "2021-12-31T19:00:00-05:00",
+  "processed_at": "2025-05-24T17:26:50-04:00",
   "reference": null,
-  "referring_site": null,
+  "referring_site": "",
   "source_identifier": null,
   "source_name": "web",
   "source_url": null,
-  "subtotal_price": "359.97",
+  "subtotal_price": "10.00",
   "subtotal_price_set": {
-    "shop_money": {
-      "amount": "359.97",
-      "currency_code": "USD"
-    },
-    "presentment_money": {
-      "amount": "359.97",
-      "currency_code": "USD"
-    }
+    "shop_money": { "amount": "10.00", "currency_code": "USD" },
+    "presentment_money": { "amount": "10.00", "currency_code": "USD" }
   },
-  "tags": "tag1, tag2",
+  "tags": "",
   "tax_exempt": false,
   "tax_lines": [],
   "taxes_included": false,
   "test": true,
-  "token": "123456abcd",
+  "token": "a462b6789a0799e1bfd007b59da10547",
   "total_cash_rounding_payment_adjustment_set": {
-    "shop_money": {
-      "amount": "0.00",
-      "currency_code": "USD"
-    },
-    "presentment_money": {
-      "amount": "0.00",
-      "currency_code": "USD"
-    }
+    "shop_money": { "amount": "0.00", "currency_code": "USD" },
+    "presentment_money": { "amount": "0.00", "currency_code": "USD" }
   },
   "total_cash_rounding_refund_adjustment_set": {
-    "shop_money": {
-      "amount": "0.00",
-      "currency_code": "USD"
-    },
-    "presentment_money": {
-      "amount": "0.00",
-      "currency_code": "USD"
-    }
+    "shop_money": { "amount": "0.00", "currency_code": "USD" },
+    "presentment_money": { "amount": "0.00", "currency_code": "USD" }
   },
-  "total_discounts": "20.00",
+  "total_discounts": "0.00",
   "total_discounts_set": {
-    "shop_money": {
-      "amount": "20.00",
-      "currency_code": "USD"
-    },
-    "presentment_money": {
-      "amount": "20.00",
-      "currency_code": "USD"
-    }
+    "shop_money": { "amount": "0.00", "currency_code": "USD" },
+    "presentment_money": { "amount": "0.00", "currency_code": "USD" }
   },
-  "total_line_items_price": "369.97",
+  "total_line_items_price": "10.00",
   "total_line_items_price_set": {
-    "shop_money": {
-      "amount": "369.97",
-      "currency_code": "USD"
-    },
-    "presentment_money": {
-      "amount": "369.97",
-      "currency_code": "USD"
-    }
+    "shop_money": { "amount": "10.00", "currency_code": "USD" },
+    "presentment_money": { "amount": "10.00", "currency_code": "USD" }
   },
-  "total_outstanding": "369.97",
-  "total_price": "359.97",
+  "total_outstanding": "0.00",
+  "total_price": "10.00",
   "total_price_set": {
-    "shop_money": {
-      "amount": "359.97",
-      "currency_code": "USD"
-    },
-    "presentment_money": {
-      "amount": "359.97",
-      "currency_code": "USD"
-    }
+    "shop_money": { "amount": "10.00", "currency_code": "USD" },
+    "presentment_money": { "amount": "10.00", "currency_code": "USD" }
   },
   "total_shipping_price_set": {
-    "shop_money": {
-      "amount": "10.00",
-      "currency_code": "USD"
-    },
-    "presentment_money": {
-      "amount": "10.00",
-      "currency_code": "USD"
-    }
+    "shop_money": { "amount": "0.00", "currency_code": "USD" },
+    "presentment_money": { "amount": "0.00", "currency_code": "USD" }
   },
   "total_tax": "0.00",
   "total_tax_set": {
-    "shop_money": {
-      "amount": "0.00",
-      "currency_code": "USD"
-    },
-    "presentment_money": {
-      "amount": "0.00",
-      "currency_code": "USD"
-    }
+    "shop_money": { "amount": "0.00", "currency_code": "USD" },
+    "presentment_money": { "amount": "0.00", "currency_code": "USD" }
   },
   "total_tip_received": "0.00",
   "total_weight": 0,
-  "updated_at": "2021-12-31T19:00:00-05:00",
+  "updated_at": "2025-05-24T17:26:54-04:00",
   "user_id": null,
   "billing_address": {
-    "first_name": "Steve",
-    "address1": "123 Shipping Street",
-    "phone": "555-555-SHIP",
-    "city": "Shippington",
-    "zip": "40003",
-    "province": "Kentucky",
+    "first_name": "1",
+    "address1": "1",
+    "phone": null,
+    "city": "1",
+    "zip": "03101",
+    "province": "New Hampshire",
     "country": "United States",
-    "last_name": "Shipper",
-    "address2": null,
-    "company": "Shipping Company",
-    "latitude": null,
-    "longitude": null,
-    "name": "Steve Shipper",
+    "last_name": "1",
+    "address2": "1",
+    "company": null,
+    "latitude": 42.9901899,
+    "longitude": -71.4625883,
+    "name": "1 1",
     "country_code": "US",
-    "province_code": "KY"
+    "province_code": "NH"
   },
   "customer": {
-    "id": 115310627314723954,
-    "email": "john@example.com",
-    "created_at": null,
-    "updated_at": null,
-    "first_name": "John",
-    "last_name": "Smith",
+    "id": 7282211651618,
+    "email": "renan.work32@gmail.com",
+    "created_at": "2025-05-22T16:32:33-04:00",
+    "updated_at": "2025-05-24T17:26:53-04:00",
+    "first_name": "1",
+    "last_name": "1",
     "state": "disabled",
     "note": null,
     "verified_email": true,
@@ -234,24 +161,24 @@
     "phone": null,
     "currency": "USD",
     "tax_exemptions": [],
-    "admin_graphql_api_id": "gid://shopify/Customer/115310627314723954",
+    "admin_graphql_api_id": "gid://shopify/Customer/7282211651618",
     "default_address": {
-      "id": 715243470612851245,
-      "customer_id": 115310627314723954,
-      "first_name": null,
-      "last_name": null,
+      "id": 8297040576546,
+      "customer_id": 7282211651618,
+      "first_name": "1",
+      "last_name": "1",
       "company": null,
-      "address1": "123 Elm St.",
-      "address2": null,
-      "city": "Ottawa",
-      "province": "Ontario",
-      "country": "Canada",
-      "zip": "K2H7A8",
-      "phone": "123-123-1234",
-      "name": "",
-      "province_code": "ON",
-      "country_code": "CA",
-      "country_name": "Canada",
+      "address1": "1",
+      "address2": "1",
+      "city": "1",
+      "province": "New Hampshire",
+      "country": "United States",
+      "zip": "03101",
+      "phone": null,
+      "name": "1 1",
+      "province_code": "NH",
+      "country_code": "US",
+      "country_name": "United States",
       "default": true
     }
   },
@@ -259,156 +186,33 @@
   "fulfillments": [],
   "line_items": [
     {
-      "id": 487817672276298554,
-      "admin_graphql_api_id": "gid://shopify/LineItem/487817672276298554",
-      "attributed_staffs": [
-        {
-          "id": "gid://shopify/StaffMember/902541635",
-          "quantity": 1
-        }
-      ],
+      "id": 14234798620706,
+      "admin_graphql_api_id": "gid://shopify/LineItem/14234798620706",
+      "attributed_staffs": [],
       "current_quantity": 1,
       "fulfillable_quantity": 1,
-      "fulfillment_service": "manual",
+      "fulfillment_service": "gift_card",
       "fulfillment_status": null,
-      "gift_card": false,
-      "grams": 100,
-      "name": "Aviator sunglasses",
-      "price": "89.99",
-      "price_set": {
-        "shop_money": {
-          "amount": "89.99",
-          "currency_code": "USD"
-        },
-        "presentment_money": {
-          "amount": "89.99",
-          "currency_code": "USD"
-        }
-      },
+      "gift_card": true,
+      "grams": 0,
+      "name": "Gift Card - $10",
+      "price": "10.00",
+      "price_set": { "shop_money": { "amount": "10.00", "currency_code": "USD" }, "presentment_money": { "amount": "10.00", "currency_code": "USD" } },
       "product_exists": true,
-      "product_id": 788032119674292922,
+      "product_id": 7971053142050,
       "properties": [],
       "quantity": 1,
-      "requires_shipping": true,
+      "requires_shipping": false,
       "sales_line_item_group_id": null,
-      "sku": "SKU2006-001",
-      "taxable": true,
-      "title": "Aviator sunglasses",
+      "sku": null,
+      "taxable": false,
+      "title": "Gift Card",
       "total_discount": "0.00",
-      "total_discount_set": {
-        "shop_money": {
-          "amount": "0.00",
-          "currency_code": "USD"
-        },
-        "presentment_money": {
-          "amount": "0.00",
-          "currency_code": "USD"
-        }
-      },
-      "variant_id": null,
+      "total_discount_set": { "shop_money": { "amount": "0.00", "currency_code": "USD" }, "presentment_money": { "amount": "0.00", "currency_code": "USD" } },
+      "variant_id": 43834870628386,
       "variant_inventory_management": null,
-      "variant_title": null,
-      "vendor": null,
-      "tax_lines": [],
-      "duties": [],
-      "discount_allocations": []
-    },
-    {
-      "id": 976318377106520349,
-      "admin_graphql_api_id": "gid://shopify/LineItem/976318377106520349",
-      "attributed_staffs": [],
-      "current_quantity": 1,
-      "fulfillable_quantity": 1,
-      "fulfillment_service": "manual",
-      "fulfillment_status": null,
-      "gift_card": false,
-      "grams": 1000,
-      "name": "Mid-century lounger",
-      "price": "159.99",
-      "price_set": {
-        "shop_money": {
-          "amount": "159.99",
-          "currency_code": "USD"
-        },
-        "presentment_money": {
-          "amount": "159.99",
-          "currency_code": "USD"
-        }
-      },
-      "product_exists": true,
-      "product_id": 788032119674292922,
-      "properties": [],
-      "quantity": 1,
-      "requires_shipping": true,
-      "sales_line_item_group_id": 142831562,
-      "sku": "SKU2006-020",
-      "taxable": true,
-      "title": "Mid-century lounger",
-      "total_discount": "0.00",
-      "total_discount_set": {
-        "shop_money": {
-          "amount": "0.00",
-          "currency_code": "USD"
-        },
-        "presentment_money": {
-          "amount": "0.00",
-          "currency_code": "USD"
-        }
-      },
-      "variant_id": null,
-      "variant_inventory_management": null,
-      "variant_title": null,
-      "vendor": null,
-      "tax_lines": [],
-      "duties": [],
-      "discount_allocations": []
-    },
-    {
-      "id": 315789986012684393,
-      "admin_graphql_api_id": "gid://shopify/LineItem/315789986012684393",
-      "attributed_staffs": [],
-      "current_quantity": 1,
-      "fulfillable_quantity": 1,
-      "fulfillment_service": "manual",
-      "fulfillment_status": null,
-      "gift_card": false,
-      "grams": 500,
-      "name": "Coffee table",
-      "price": "119.99",
-      "price_set": {
-        "shop_money": {
-          "amount": "119.99",
-          "currency_code": "USD"
-        },
-        "presentment_money": {
-          "amount": "119.99",
-          "currency_code": "USD"
-        }
-      },
-      "product_exists": true,
-      "product_id": 788032119674292922,
-      "properties": [],
-      "quantity": 1,
-      "requires_shipping": true,
-      "sales_line_item_group_id": 142831562,
-      "sku": "SKU2006-035",
-      "taxable": true,
-      "title": "Coffee table",
-      "total_discount": "0.00",
-      "total_discount_set": {
-        "shop_money": {
-          "amount": "0.00",
-          "currency_code": "USD"
-        },
-        "presentment_money": {
-          "amount": "0.00",
-          "currency_code": "USD"
-        }
-      },
-      "variant_id": null,
-      "variant_inventory_management": null,
-      "variant_title": null,
-      "vendor": null,
+      "variant_title": "$10",
+      "vendor": "Snowboard Vendor",
       "tax_lines": [],
       "duties": [],
       "discount_allocations": []
@@ -416,68 +220,7 @@
   ],
   "payment_terms": null,
   "refunds": [],
-  "shipping_address": {
-    "first_name": "Steve",
-    "address1": "123 Shipping Street",
-    "phone": "555-555-SHIP",
-    "city": "Shippington",
-    "zip": "40003",
-    "province": "Kentucky",
-    "country": "United States",
-    "last_name": "Shipper",
-    "address2": null,
-    "company": "Shipping Company",
-    "latitude": null,
-    "longitude": null,
-    "name": "Steve Shipper",
-    "country_code": "US",
-    "province_code": "KY"
-  },
-  "shipping_lines": [
-    {
-      "id": 271878346596884015,
-      "carrier_identifier": null,
-      "code": null,
-      "current_discounted_price_set": {
-        "shop_money": {
-          "amount": "0.00",
-          "currency_code": "USD"
-        },
-        "presentment_money": {
-          "amount": "0.00",
-          "currency_code": "USD"
-        }
-      },
-      "discounted_price": "10.00",
-      "discounted_price_set": {
-        "shop_money": {
-          "amount": "10.00",
-          "currency_code": "USD"
-        },
-        "presentment_money": {
-          "amount": "10.00",
-          "currency_code": "USD"
-        }
-      },
-      "is_removed": false,
-      "phone": null,
-      "price": "10.00",
-      "price_set": {
-        "shop_money": {
-          "amount": "10.00",
-          "currency_code": "USD"
-        },
-        "presentment_money": {
-          "amount": "10.00",
-          "currency_code": "USD"
-        }
-      },
-      "requested_fulfillment_service_id": null,
-      "source": "shopify",
-      "title": "Generic Shipping",
-      "tax_lines": [],
-      "discount_allocations": []
-    }
-  ],
+  "shipping_address": null,
+  "shipping_lines": [],
   "returns": []
 }

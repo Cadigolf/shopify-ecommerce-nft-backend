@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import router from "./router";
 import { SupabaseConnection } from './utils/supabase';
 import cors from 'cors';
+import { buyProductController } from './controller/nft.controller';
 dotenv.config();
 
 const app = express();
@@ -24,9 +25,7 @@ app.use(express.raw());
 app.use('/api', router);
 
 app.post('/webhooks/orders/paid', express.json(), (req, res) => {
-  const orderData = req.body;
-  console.log('New Order:', orderData);
-  res.status(200).send('Webhook received');
+  buyProductController(req, res);
 });
 
 SupabaseConnection();
