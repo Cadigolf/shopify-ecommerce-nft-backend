@@ -34,6 +34,7 @@
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "ipfs-http-client": "^60.0.1",
+    "node-fetch": "^3.3.2",
     "nodemailer": "^7.0.3",
     "pg": "^8.16.0",
     "resend": "^4.5.1"
