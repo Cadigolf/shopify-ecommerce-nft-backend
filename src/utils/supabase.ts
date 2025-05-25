@@ -29,7 +29,8 @@ export async function SupabaseConnection() {
                 email text UNIQUE NOT NULL,
                 walletAddress text NOT NULL,
                 privateKey text NOT NULL,
-                history text[] DEFAULT '{}',
+                history jsonb ,
+                orderid int8,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
         `;

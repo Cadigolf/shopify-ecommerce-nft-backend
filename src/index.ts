@@ -1,10 +1,12 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import router from "./router";
 import { SupabaseConnection } from './utils/supabase';
 import cors from 'cors';
 import { buyProductController } from './controller/nft.controller';
+import { ProductService } from './services/product.service';
+import { getAllProducts } from './utils/getAllproduct';
 dotenv.config();
 
 const app = express();
@@ -23,12 +25,23 @@ app.use(express.json());
 app.use(express.raw());
 
 app.use('/api', router);
-
-app.post('/webhooks/orders/paid', express.json(), (req, res) => {
-  buyProductController(req, res);
-});
-
 SupabaseConnection();
+
+app.post('/webhooks/orders/paid', express.json(), async (req: Request, res: Response): Promise<void> => {
+  try {
+    console.log(req.body);
+    const result = await ProductService.getUserProductHistoryProductId(req.body.contact_email, req.body.id);
+    if(result){
+      await buyProductController(req, res);
+    }
+    else{
+      res.status(400).json({ message: 'already purchased' });
+    }
+  } catch (error) {
+    console.error('Error processing webhook:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);

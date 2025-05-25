@@ -28,7 +28,7 @@ export const UserController = {
             res.status(500).json({ error: 'Failed to fetch users' });
         }
     },
-    getUserByEmail: async (req: Request, res: Response) => {
+    getUserHistoryByEmail: async (req: Request, res: Response) => {
         try {
             const { email } = req.body;
             const result = await UserService.getUserByEmail(email);

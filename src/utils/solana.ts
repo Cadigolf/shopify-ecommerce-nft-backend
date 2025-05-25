@@ -92,6 +92,7 @@ export const mintNFT = async (metadata: any): Promise<string> => {
             }
         });
         console.log("1️⃣ NFT minted successfully!");
+        console.log(`https://explorer.solana.com/address/${mint.publicKey.toString()}?cluster=devnet`);
         return mint.publicKey.toString()
     } catch (error: any) {
         console.error("ERROR------> NFT minting failed:", error);

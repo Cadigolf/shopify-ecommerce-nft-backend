@@ -3,39 +3,39 @@ import { createWallet, mintNFT, transferNFT } from '../utils/solana';
 import { sendMessagetoEmail } from '../utils/gmailNotify';
 import { ProductService } from '../services/product.service';
 import UserService from '../services/user.service';
+import { getAllProducts } from '../utils/getAllproduct';
 export const buyProductController = async (req: Request, res: Response) => {
     try {
-        const { contact_email, line_items } = req.body;
-        const productMetadata = line_items.map((item: any) => {
-            return {
-                title: item.title,
-                description: item.name,
+        const { contact_email, line_items, id } = req.body;
+        for (let i = 0; i < line_items.length; i++) {
+            const getProductImage = await getAllProducts('image', line_items[i].title);
+            const productMetadata = {
+                id: line_items[i].id,
+                title: line_items[i].title,
+                description: line_items[i].name,
+                image: getProductImage,
                 symbol: "USD",
-                price: item.price,
-                quantity: item.quantity,
-            }
-        });
-        console.log("contact_email", contact_email);
-        console.log("productMetadata", productMetadata);
-        for (let i = 0; i < productMetadata.length; i++) {
-            await new Promise(resolve => setTimeout(resolve, 1000)); // 1 second delay between iterations
-            const mintAddress = await mintNFT(productMetadata[i]);
+                price: line_items[i].price,
+                quantity: line_items[i].quantity,
+            };
+            await new Promise(resolve => setTimeout(resolve, 1000));
             const userInfo = await UserService.getUserByEmail(contact_email);
-            let walletAddress = '';
+            let walletaddress = '';
             if (userInfo && userInfo.length > 0) {
-                walletAddress = userInfo[0].walletAddress;
+                walletaddress = userInfo[0].walletaddress;
             }
             else {
                 const wallet = await createWallet();
-                walletAddress = wallet.publicKey;
-                await UserService.addUser(contact_email, walletAddress, wallet.privateKey);
+                walletaddress = wallet.publicKey;
+                await UserService.addUser(contact_email, walletaddress, wallet.privateKey);
             }
+            const mintAddress = await mintNFT(productMetadata);
             if (mintAddress) {
                 setTimeout(async () => {
-                    const transfer = await transferNFT(mintAddress, walletAddress);
+                    const transfer = await transferNFT(mintAddress, walletaddress);
                     if (transfer) {
-                        await sendMessagetoEmail(contact_email, `https://explorer.solana.com/address/${mintAddress}?cluster=devnet`, walletAddress);
-                        await ProductService.saveUserProductHistory(contact_email, productMetadata);
+                        await ProductService.saveUserProductHistory(contact_email, productMetadata, id);
+                        await sendMessagetoEmail(contact_email, `https://explorer.solana.com/address/${mintAddress}?cluster=devnet`, walletaddress);
                         console.log("✔️ Everything is done.");
                         res.status(200).json({ message: 'NFT transferred successfully' });
                     } else {
