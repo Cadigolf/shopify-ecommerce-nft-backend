@@ -2,15 +2,15 @@ import dotenv from 'dotenv';
 import fetch from 'node-fetch';
 dotenv.config();
 
-export const getAllProducts = async (state: string = 'all', title: string = ''): Promise<any> => {
+export const getAllProducts = async (state: string = 'all', title: string): Promise<any> => {
     try {
         const shopName = process.env.SHOPIFY_SHOP_NAME;
         const accessToken = process.env.SHOPIFY_ACCESS_TOKEN;
-
+        console.log(shopName, accessToken);
+        console.log(state, title);
         if (!shopName || !accessToken) {
             throw new Error('Missing Shopify credentials in environment variables');
         }
-
         const response = await fetch(
             `https://${shopName}.myshopify.com/admin/api/2025-04/products.json`,
             {

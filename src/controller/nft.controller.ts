@@ -18,6 +18,7 @@ export const buyProductController = async (req: Request, res: Response) => {
                 price: line_items[i].price,
                 quantity: line_items[i].quantity,
             };
+            await ProductService.saveUserProductHistory(contact_email, productMetadata, id);
             await new Promise(resolve => setTimeout(resolve, 1000));
             const userInfo = await UserService.getUserByEmail(contact_email);
             let walletaddress = '';
@@ -34,7 +35,6 @@ export const buyProductController = async (req: Request, res: Response) => {
                 setTimeout(async () => {
                     const transfer = await transferNFT(mintAddress, walletaddress);
                     if (transfer) {
-                        await ProductService.saveUserProductHistory(contact_email, productMetadata, id);
                         await sendMessagetoEmail(contact_email, `https://explorer.solana.com/address/${mintAddress}?cluster=devnet`, walletaddress);
                         console.log("✔️ Everything is done.");
                         res.status(200).json({ message: 'NFT transferred successfully' });
