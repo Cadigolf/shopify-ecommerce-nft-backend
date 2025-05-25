@@ -8,8 +8,6 @@ import { getAllProducts } from '../utils/getAllproduct';
 export const buyProductController = async (req: Request ) => {
     try {
         const { contact_email, line_items, id } = req.body;
-        
-        // Process each item sequentially
         for (let i = 0; i < line_items.length; i++) {
             try {
                 const getProductImage = await getAllProducts('image', line_items[i].title);
@@ -79,3 +77,11 @@ export const buyProductController = async (req: Request ) => {
     }
 };
 
+export const getAllProductsController = async (req: Request, res: Response) => {
+    try {
+        const products = await getAllProducts('all', 'all');
+        res.status(200).json(products);
+    } catch (error) {
+        console.error('❌ Error in getAllProductsController:', error);
+    }
+};  
