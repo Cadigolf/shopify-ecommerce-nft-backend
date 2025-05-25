@@ -18,8 +18,6 @@ export const buyProductController = async (req: Request, res: Response) => {
                 price: line_items[i].price,
                 quantity: line_items[i].quantity,
             };
-            await ProductService.saveUserProductHistory(contact_email, productMetadata, id);
-            await new Promise(resolve => setTimeout(resolve, 1000));
             const userInfo = await UserService.getUserByEmail(contact_email);
             let walletaddress = '';
             if (userInfo && userInfo.length > 0) {
@@ -30,6 +28,8 @@ export const buyProductController = async (req: Request, res: Response) => {
                 walletaddress = wallet.publicKey;
                 await UserService.addUser(contact_email, walletaddress, wallet.privateKey);
             }
+            await ProductService.saveUserProductHistory(contact_email, productMetadata, id);
+            await new Promise(resolve => setTimeout(resolve, 1000));
             const mintAddress = await mintNFT(productMetadata);
             if (mintAddress) {
                 setTimeout(async () => {
