@@ -7,11 +7,8 @@ import { getAllProducts } from '../utils/getAllproduct';
 export const buyProductController = async (req: Request, res: Response) => {
     try {
         const { contact_email, line_items, id } = req.body;
-        console.log("1: ", contact_email, line_items, id);
         for (let i = 0; i < line_items.length; i++) {
-            console.log("2: ", line_items[i]);
             const getProductImage = await getAllProducts('image', line_items[i].title);
-            console.log("5: ", getProductImage);
             const productMetadata = {
                 id: line_items[i].id,
                 title: line_items[i].title.substring(0, 10),
