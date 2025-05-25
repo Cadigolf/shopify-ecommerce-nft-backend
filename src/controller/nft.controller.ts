@@ -8,6 +8,8 @@ import { getAllProducts } from '../utils/getAllproduct';
 export const buyProductController = async (req: Request ) => {
     try {
         const { contact_email, line_items, id } = req.body;
+        console.log(line_items);
+        console.log(line_items.length);
         for (let i = 0; i < line_items.length; i++) {
             try {
                 const getProductImage = await getAllProducts('image', line_items[i].title);
