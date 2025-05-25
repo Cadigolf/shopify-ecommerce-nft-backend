@@ -5,38 +5,22 @@ import { ProductService } from '../services/product.service';
 import UserService from '../services/user.service';
 import { getAllProducts } from '../utils/getAllproduct';
 
-interface LineItem {
-    id: string;
-    title: string;
-    name: string;
-    price: number;
-    quantity: number;
-}
-
-interface ProcessResult {
-    success: boolean;
-    message: string;
-    item: string;
-    mintAddress?: string;
-    walletAddress?: string;
-    error?: string;
-}
-
-export const buyProductController = async (req: Request, res: Response) => {
+export const buyProductController = async (req: Request ) => {
     try {
         const { contact_email, line_items, id } = req.body;
-
-        const results = await Promise.all(line_items.map(async (item: LineItem) => {
+        
+        // Process each item sequentially
+        for (let i = 0; i < line_items.length; i++) {
             try {
-                const getProductImage = await getAllProducts('image', item.title);
+                const getProductImage = await getAllProducts('image', line_items[i].title);
                 const productMetadata = {
-                    id: item.id,
-                    title: item.title.substring(0, 10),
-                    description: item.name,
+                    id: line_items[i].id,
+                    title: line_items[i].title.substring(0, 10),
+                    description: line_items[i].name,
                     image: getProductImage,
                     symbol: "USD",
-                    price: item.price,
-                    quantity: item.quantity,
+                    price: line_items[i].price,
+                    quantity: line_items[i].quantity,
                 };
 
                 // Get or create user wallet
@@ -50,16 +34,16 @@ export const buyProductController = async (req: Request, res: Response) => {
                     await UserService.addUser(contact_email, walletaddress, wallet.privateKey);
                 }
 
+                // Save product history
+                await ProductService.saveUserProductHistory(contact_email, productMetadata, id);
+
+                // Add delay before minting
                 await new Promise(resolve => setTimeout(resolve, 1000));
 
                 // Mint NFT
                 const mintAddress = await mintNFT(productMetadata);
                 if (!mintAddress) {
-                    return {
-                        success: false,
-                        message: 'Failed to mint NFT',
-                        item: item.title
-                    } as ProcessResult;
+                    throw new Error('Failed to mint NFT');
                 }
 
                 // Add delay before transferring
@@ -68,60 +52,30 @@ export const buyProductController = async (req: Request, res: Response) => {
                 // Transfer NFT
                 const transfer = await transferNFT(mintAddress, walletaddress);
                 if (!transfer) {
-                    return {
-                        success: false,
-                        message: 'Failed to transfer NFT',
-                        item: item.title
-                    } as ProcessResult;
+                    throw new Error('Failed to transfer NFT');
                 }
 
                 // Send email notification
-                await ProductService.saveUserProductHistory(contact_email, productMetadata, id);
-                await sendMessagetoEmail(
-                    contact_email,
-                    `https://explorer.solana.com/address/${mintAddress}?cluster=devnet`,
-                    walletaddress
-                );
+                try {
+                    await sendMessagetoEmail(
+                        contact_email,
+                        `https://explorer.solana.com/address/${mintAddress}?cluster=devnet`,
+                        walletaddress
+                    );
+                } catch (emailError) {
+                    console.error('Email sending failed:', emailError);
+                    // Don't fail the whole process if email fails
+                }
 
-                return {
-                    success: true,
-                    message: 'NFT transferred successfully',
-                    item: item.title,
-                    mintAddress,
-                    walletAddress: walletaddress
-                } as ProcessResult;
-            } catch (error: unknown) {
-                console.error(`Error processing item ${item.title}:`, error);
-                return {
-                    success: false,
-                    message: 'Error processing item',
-                    item: item.title,
-                    error: error instanceof Error ? error.message : 'Unknown error'
-                } as ProcessResult;
+                console.log(`✔️ NFT ${i + 1} of ${line_items.length} processed successfully`);
+            } catch (error) {
+                console.error(`❌ Error processing item ${i + 1}:`, error);
+                throw error; // Re-throw to be caught by outer try-catch
             }
-        }));
-
-        // Check if all operations were successful
-        const allSuccessful = results.every(result => result.success);
-        
-        // Send a single response with all results
-        if (allSuccessful) {
-            res.status(200).json({
-                message: 'All NFTs processed successfully',
-                results
-            });
-        } else {
-            res.status(207).json({
-                message: 'Some NFTs failed to process',
-                results
-            });
         }
 
-    } catch (error: unknown) {
+    } catch (error) {
         console.error('❌ Error in buyProductController:', error);
-        res.status(500).json({
-            error: 'Failed to process NFTs',
-            message: error instanceof Error ? error.message : 'Unknown error'
-        });
     }
 };
+

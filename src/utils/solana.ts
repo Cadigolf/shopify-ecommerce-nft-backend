@@ -91,7 +91,7 @@ export const mintNFT = async (metadata: any): Promise<string> => {
                 preflightCommitment: "confirmed"
             }
         });
-        console.log("1️⃣ NFT minted successfully!");
+        console.log("2️⃣ NFT minted successfully!");
         return mint.publicKey.toString()
     } catch (error: any) {
         console.error("ERROR------> NFT minting failed:", error);
@@ -140,7 +140,7 @@ export const transferNFT = async (mintAddress: string, toAddress: string) => {
         }).sendAndConfirm(umi, {
             send: { commitment: "finalized" }
         });
-        console.log("2️⃣ NFT transferred successfully!");
+        console.log("3️⃣ NFT transferred successfully!");
         return true;
     } catch (error: any) {
         const errorMessage = error.message || "Unknown error occurred while transferring NFT";
