@@ -4,6 +4,6 @@ const router = express.Router();
 
 router.post('/addUser', UserController.addUser as RequestHandler);
 router.get('/getAllUsers', UserController.getAllUsers as RequestHandler);
-router.post('/getUserHistoryByEmail', UserController.getUserHistoryByEmail as RequestHandler);
+router.post('/getUserNFTs', UserController.getUserNFTs as RequestHandler);
 
 export default router;

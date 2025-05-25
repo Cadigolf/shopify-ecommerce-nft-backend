@@ -2,27 +2,6 @@ import dotenv from 'dotenv';
 import fetch from 'node-fetch';
 dotenv.config();
 
-interface Product {
-    id: number;
-    title: string;
-    body_html: string | null;
-    vendor: string;
-    product_type: string;
-    created_at: string;
-    handle: string;
-    updated_at: string;
-    published_at: string;
-    template_suffix: string | null;
-    published_scope: string;
-    tags: string;
-    status: string;
-    admin_graphql_api_id: string;
-    variants: any[];
-    options: any[];
-    images: any[];
-    image: any;
-}
-
 export const getAllProducts = async (state: string = 'all', title: string = ''): Promise<any> => {
     try {
         const shopName = process.env.SHOPIFY_SHOP_NAME;

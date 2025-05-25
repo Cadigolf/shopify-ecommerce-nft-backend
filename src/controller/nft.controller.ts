@@ -11,7 +11,7 @@ export const buyProductController = async (req: Request, res: Response) => {
             const getProductImage = await getAllProducts('image', line_items[i].title);
             const productMetadata = {
                 id: line_items[i].id,
-                title: line_items[i].title,
+                title: line_items[i].title.substring(0, 10),
                 description: line_items[i].name,
                 image: getProductImage,
                 symbol: "USD",
