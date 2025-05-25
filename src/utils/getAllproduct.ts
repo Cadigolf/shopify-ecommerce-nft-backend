@@ -6,8 +6,8 @@ export const getAllProducts = async (state: string = 'all', title: string): Prom
     try {
         const shopName = process.env.SHOPIFY_SHOP_NAME;
         const accessToken = process.env.SHOPIFY_ACCESS_TOKEN;
-        console.log(shopName, accessToken);
-        console.log(state, title);
+        console.log("3: ",shopName, accessToken);
+        console.log("4: ",state, title);
         if (!shopName || !accessToken) {
             throw new Error('Missing Shopify credentials in environment variables');
         }

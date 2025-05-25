@@ -45,7 +45,7 @@ export const ProductService = {
             if (updateError) {
                 throw new Error(`Failed to update user history: ${updateError.message}`);
             }
-            console.log("✅ User product history saved successfully!");
+            console.log("3️⃣ User product history saved successfully!");
             return data;
         } catch (error) {
             console.error('❌ Error saving user product history:', error);
