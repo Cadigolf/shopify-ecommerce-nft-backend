@@ -20,8 +20,6 @@ export const ProductService = {
                 throw new Error(`Failed to update order ID: ${orderError.message}`);
             }
 
-            console.log("1: ", userEmail);
-            console.log("2: ", userProduct);
             // Fetch existing user data with history
             const { data: existingUser, error: fetchError } = await supabase.from('users')
                 .select('history')
@@ -30,7 +28,6 @@ export const ProductService = {
             if (fetchError) {
                 throw new Error(`Failed to fetch user history: ${fetchError.message}`);
             }
-            console.log("3: ", existingUser);
             // Initialize or parse existing history
             let existingHistory: any[] = [];
             if (existingUser?.history) {
@@ -39,7 +36,6 @@ export const ProductService = {
             else{
                 existingHistory = [userProduct];
             }
-            console.log("4: ", existingHistory);
             const { data, error: updateError } = await supabase.from('users')
                 .update({ history: existingHistory })
                 .eq('email', userEmail);

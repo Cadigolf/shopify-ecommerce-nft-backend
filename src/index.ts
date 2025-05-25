@@ -29,6 +29,7 @@ SupabaseConnection();
 
 app.post('/webhooks/orders/paid', express.json(), async (req: Request, res: Response): Promise<void> => {
   try {
+    console.log("\n\n1: ", req.body, "\n\n\n\n");
     const result = await ProductService.getUserProductHistoryProductId(req.body.contact_email, req.body.id);
     if(result){
       await buyProductController(req, res);
