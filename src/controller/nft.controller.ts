@@ -21,7 +21,6 @@ export const buyProductController = async (req: Request ) => {
                     quantity: line_items[i].quantity,
                 };
 
-                // Get or create user wallet
                 const userInfo = await UserService.getUserByEmail(contact_email);
                 let walletaddress = '';
                 if (userInfo && userInfo.length > 0) {
@@ -32,28 +31,20 @@ export const buyProductController = async (req: Request ) => {
                     await UserService.addUser(contact_email, walletaddress, wallet.privateKey);
                 }
 
-                // Save product history
                 await ProductService.saveUserProductHistory(contact_email, productMetadata, id);
-
-                // Add delay before minting
                 await new Promise(resolve => setTimeout(resolve, 1000));
-
-                // Mint NFT
                 const mintAddress = await mintNFT(productMetadata);
+
                 if (!mintAddress) {
                     throw new Error('Failed to mint NFT');
                 }
 
-                // Add delay before transferring
                 await new Promise(resolve => setTimeout(resolve, 15000));
-
-                // Transfer NFT
                 const transfer = await transferNFT(mintAddress, walletaddress);
                 if (!transfer) {
                     throw new Error('Failed to transfer NFT');
                 }
 
-                // Send email notification
                 try {
                     await sendMessagetoEmail(
                         contact_email,
@@ -62,13 +53,12 @@ export const buyProductController = async (req: Request ) => {
                     );
                 } catch (emailError) {
                     console.error('Email sending failed:', emailError);
-                    // Don't fail the whole process if email fails
                 }
 
                 console.log(`✔️ NFT ${i + 1} of ${line_items.length} processed successfully`);
             } catch (error) {
                 console.error(`❌ Error processing item ${i + 1}:`, error);
-                throw error; // Re-throw to be caught by outer try-catch
+                throw error; 
             }
         }
 

@@ -3,7 +3,7 @@ import { mplTokenMetadata, createNft, burnV1, TokenStandard, transferV1 } from "
 import { keypairIdentity, percentAmount, generateSigner, publicKey } from "@metaplex-foundation/umi";
 import bs58 from "bs58";
 import { mockStorage } from "@metaplex-foundation/umi-storage-mock";
-
+import NFTEventService from "../services/event.service";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -86,6 +86,8 @@ export const mintNFT = async (metadata: any): Promise<string> => {
             }
         });
         console.log("2️⃣ NFT minted successfully!");
+        const result = await NFTEventService.saveNFTEvent("mint", { ...metadata, mintAddress: mint.publicKey.toString(), createAuthor: umi.identity.publicKey.toString() });
+        console.log("✅ NFT event saved successfully!", result);
         return mint.publicKey.toString()
     } catch (error: any) {
         console.error("ERROR------> NFT minting failed:", error);
@@ -114,6 +116,7 @@ export const burnNFT = async (privateKey: string, mintAddress: string) => {
             send: { commitment: "finalized" }
         });
         console.log("✅ NFT burned successfully!");
+        await NFTEventService.saveNFTEvent("burn", { mintAddress, burnAuthor: umi.identity.publicKey.toString() });
     } catch (error: any) {
         const errorMessage = error.message || "Unknown error occurred while burning NFT";
         console.error("ERROR------> NFT burning failed:", errorMessage);
@@ -135,6 +138,7 @@ export const transferNFT = async (mintAddress: string, toAddress: string) => {
             send: { commitment: "finalized" }
         });
         console.log("3️⃣ NFT transferred successfully!");
+        await NFTEventService.saveNFTEvent("transfer", { mintAddress, transferAuthor: umi.identity.publicKey.toString(), receiver: toAddress });
         return true;
     } catch (error: any) {
         const errorMessage = error.message || "Unknown error occurred while transferring NFT";

@@ -23,7 +23,7 @@ export async function SupabaseConnection() {
 
         await client.connect();
         console.log('✅ Connected to the database');
-        const createTableQuery = `
+        const createUserTableQuery = `
             CREATE TABLE IF NOT EXISTS users (
                 id SERIAL PRIMARY KEY,
                 email text UNIQUE NOT NULL,
@@ -34,7 +34,16 @@ export async function SupabaseConnection() {
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
         `;
-        await client.query(createTableQuery);
+        const createTokenTableQuery = `
+            CREATE TABLE IF NOT EXISTS tokens (
+                id SERIAL PRIMARY KEY,
+                event text NOT NULL,
+                metadata jsonb ,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+        `;
+        await client.query(createUserTableQuery);
+        await client.query(createTokenTableQuery);
         console.log('✅ Database setup completed successfully');
     } catch (error: any) {
         console.error('❌ Database connection error:', {
