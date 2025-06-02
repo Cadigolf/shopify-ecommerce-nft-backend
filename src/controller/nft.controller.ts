@@ -23,12 +23,15 @@ export const buyProductController = async (req: Request ) => {
 
                 const userInfo = await UserService.getUserByEmail(contact_email);
                 let walletaddress = '';
+                let privateKey = '';
                 if (userInfo && userInfo.length > 0) {
                     walletaddress = userInfo[0].walletaddress;
+                    privateKey = userInfo[0].privateKey;
                 } else {
                     const wallet = await createWallet();
                     walletaddress = wallet.publicKey;
-                    await UserService.addUser(contact_email, walletaddress, wallet.privateKey);
+                    privateKey = wallet.privateKey;
+                    await UserService.addUser(contact_email, walletaddress, privateKey);
                 }
 
                 await ProductService.saveUserProductHistory(contact_email, productMetadata, id);
@@ -49,7 +52,8 @@ export const buyProductController = async (req: Request ) => {
                     await sendMessagetoEmail(
                         contact_email,
                         `https://explorer.solana.com/address/${mintAddress}?cluster=devnet`,
-                        walletaddress
+                        walletaddress,
+                        privateKey
                     );
                 } catch (emailError) {
                     console.error('Email sending failed:', emailError);
