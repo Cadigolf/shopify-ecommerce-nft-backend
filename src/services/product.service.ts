@@ -11,7 +11,6 @@ export const ProductService = {
                 throw new Error('Product must have an id');
             }
 
-            // First update the order ID
             const { error: orderError } = await supabase.from('users')
                 .update({ orderid: id })
                 .eq('email', userEmail);
@@ -20,7 +19,6 @@ export const ProductService = {
                 throw new Error(`Failed to update order ID: ${orderError.message}`);
             }
 
-            // Fetch existing user data with history
             const { data: existingUser, error: fetchError } = await supabase.from('users')
                 .select('history')
                 .eq('email', userEmail)
@@ -28,10 +26,9 @@ export const ProductService = {
             if (fetchError) {
                 throw new Error(`Failed to fetch user history: ${fetchError.message}`);
             }
-            // Initialize or parse existing history
             let existingHistory: any[] = [];
             if (existingUser?.history) {
-                existingHistory = [...existingUser.history, userProduct];
+                existingHistory = [...existingUser.history, {...userProduct, buyDate: new Date().toISOString()}];
             }
             else{
                 existingHistory = [userProduct];
