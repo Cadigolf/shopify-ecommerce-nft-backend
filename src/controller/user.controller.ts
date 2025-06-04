@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import UserService from '../services/user.service';
+import { transferNFTToUser } from '../utils/solana';
 
 export const UserController = {
     addUser: async (req: Request, res: Response) => {
@@ -18,14 +19,22 @@ export const UserController = {
             res.status(500).json({ error: 'Failed to add user' });
         }
     },
-    getAllUsers: async (req: Request, res: Response) => {
+    transferNFT: async (req: Request, res: Response) => {
         try {
-            const result = await UserService.getAllUsers();
-            result === null ? res.status(400).json({ message: 'Users fetch failed' })
-                : res.status(200).json({ message: 'Users fetched successfully', result });
+            const { transferAddress, NFTAddress, userEmail } = req.body;
+            const getUserInfo = await UserService.getUserByEmail(userEmail);
+            if (!getUserInfo || getUserInfo.length === 0) {
+                throw new Error('User not found');
+            }
+            const userWalletPrivateKey = getUserInfo[0].privatekey;
+            const transferNFT = await transferNFTToUser(NFTAddress, transferAddress, userWalletPrivateKey);
+            return res.status(200).json({
+                message: 'NFT transferred successfully',
+                status: transferNFT
+            });
         } catch (error) {
             console.error('❌ Error fetching users:', error);
-            res.status(500).json({ error: 'Failed to fetch users' });
+            res.status(500).json({ error: 'Failed to fetch users', status: false });
         }
     },
     getUserNFTs: async (req: Request, res: Response) => {

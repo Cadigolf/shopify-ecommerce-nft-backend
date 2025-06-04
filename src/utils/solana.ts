@@ -146,3 +146,32 @@ export const transferNFT = async (mintAddress: string, toAddress: string) => {
         return false;
     }
 }
+
+
+export const transferNFTToUser = async (mintAddress: string, toAddress: string, privateKey: string) => {
+    try {
+        const umiKeypair = umi.eddsa.createKeypairFromSecretKey(bs58.decode(privateKey || ""));
+        umi.use(keypairIdentity(umiKeypair))
+            .use(mplTokenMetadata())
+            .use(mockStorage());
+
+        const mint = publicKey(mintAddress);
+        const to = publicKey(toAddress);
+        await transferV1(umi, {
+            mint,
+            authority: umi.identity,
+            tokenOwner: umi.identity.publicKey,
+            destinationOwner: to,
+            tokenStandard: TokenStandard.NonFungible,
+        }).sendAndConfirm(umi, {
+            send: { commitment: "finalized" }
+        });
+        console.log("✔️ NFT transferred successfully!");
+        await NFTEventService.saveNFTEvent("transfer", { mintAddress, transferAuthor: umi.identity.publicKey.toString(), receiver: toAddress });
+        return true;
+    } catch (error: any) {
+        const errorMessage = error.message || "Unknown error occurred while transferring NFT";
+        console.error("ERROR------> NFT transferring failed:", errorMessage);
+        return false;
+    }
+}

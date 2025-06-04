@@ -5,7 +5,7 @@ import { ProductService } from '../services/product.service';
 import UserService from '../services/user.service';
 import { getAllProducts } from '../utils/getAllproduct';
 
-export const buyProductController = async (req: Request ) => {
+export const buyProductController = async (req: Request) => {
     try {
         const { contact_email, line_items, id } = req.body;
         for (let i = 0; i < line_items.length; i++) {
@@ -34,7 +34,6 @@ export const buyProductController = async (req: Request ) => {
                     await UserService.addUser(contact_email, walletaddress, privateKey);
                 }
 
-                await ProductService.saveUserProductHistory(contact_email, productMetadata, id);
                 await new Promise(resolve => setTimeout(resolve, 1000));
                 const mintAddress = await mintNFT(productMetadata);
 
@@ -42,6 +41,7 @@ export const buyProductController = async (req: Request ) => {
                     throw new Error('Failed to mint NFT');
                 }
 
+                await ProductService.saveUserProductHistory(contact_email, { ...productMetadata, mintAddress }, id);
                 await new Promise(resolve => setTimeout(resolve, 15000));
                 const transfer = await transferNFT(mintAddress, walletaddress);
                 if (!transfer) {
@@ -62,7 +62,7 @@ export const buyProductController = async (req: Request ) => {
                 console.log(`✔️ NFT ${i + 1} of ${line_items.length} processed successfully`);
             } catch (error) {
                 console.error(`❌ Error processing item ${i + 1}:`, error);
-                throw error; 
+                throw error;
             }
         }
 
