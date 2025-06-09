@@ -53,5 +53,17 @@ export const UserController = {
             console.error('❌ Error fetching user by email:', error);
             res.status(500).json({ error: 'Failed to fetch user by email' });
         }
+    },
+    getAllUsers: async (req: Request, res: Response) => {
+        try {
+            const result = await UserService.getAllUsers();
+            return res.status(200).json({
+                message: 'Users fetched successfully',
+                result: result
+            });
+        } catch (error) {
+            console.error('❌ Error fetching all users:', error);
+            res.status(500).json({ error: 'Failed to fetch all users' });
+        }
     }
 }

@@ -15,6 +15,7 @@ router.get('/public/wallet/create', PublicController.createWallet as RequestHand
 router.post('/public/transferNFT', PublicController.transferNFT as RequestHandler);
 
 //Merchant site routes
+router.get('/getAllUsers', UserController.getAllUsers as RequestHandler);
 router.get('/event/getAllNFTEvents', NFTEventController.getNFTAllEvents as RequestHandler);
 
 //User site routes
