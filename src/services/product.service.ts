@@ -28,9 +28,9 @@ export const ProductService = {
             }
             let existingHistory: any[] = [];
             if (existingUser?.history) {
-                existingHistory = [...existingUser.history, {...userProduct, buyDate: new Date().toISOString()}];
+                existingHistory = [...existingUser.history, { ...userProduct, buyDate: new Date().toISOString() }];
             }
-            else{
+            else {
                 existingHistory = [userProduct];
             }
             const { data, error: updateError } = await supabase.from('users')
@@ -66,6 +66,50 @@ export const ProductService = {
         } catch (error) {
             console.error('❌ Error getting user product history:', error);
             return false;
+        }
+    },
+    deleteUserProductHistory: async (userEmail: string, nftAddress: string) => {
+        try {
+            // Validate input
+            if (!userEmail || !nftAddress) {
+                throw new Error('Missing required parameters');
+            }
+
+            const { data: existingUser, error: fetchError } = await supabase.from('users')
+                .select('history')
+                .eq('email', userEmail)
+                .single();
+
+            if (fetchError) {
+                throw new Error(`Failed to fetch user history: ${fetchError.message}`);
+            }
+
+            if (!existingUser?.history) {
+                return { message: 'No history found for user' };
+            }
+
+            // Filter out the item with matching mintAddress
+            const updatedHistory = existingUser.history.filter((item: any) => item.mintAddress !== nftAddress);
+
+            // Update the user's history with the filtered array
+            const { data, error: updateError } = await supabase.from('users')
+                .update({ history: updatedHistory })
+                .eq('email', userEmail);
+
+            if (updateError) {
+                throw new Error(`Failed to update user history: ${updateError.message}`);
+            }
+
+            const newUserHistory = await supabase.from('users') 
+                .select('history')
+                .eq('email', userEmail)
+                .single();
+
+            console.log("✅ User product history item deleted successfully!");
+            return newUserHistory;
+        } catch (error) {
+            console.error('❌ Error deleting user product history:', error);
+            throw error;
         }
     }
 }

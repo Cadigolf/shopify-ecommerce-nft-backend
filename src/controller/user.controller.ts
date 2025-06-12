@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
 import UserService from '../services/user.service';
 import { transferNFTToUser } from '../utils/solana';
-
+import { ProductService } from '../services/product.service';
+    
 export const UserController = {
     addUser: async (req: Request, res: Response) => {
         try {
@@ -28,9 +29,11 @@ export const UserController = {
             }
             const userWalletPrivateKey = getUserInfo[0].privatekey;
             const transferNFT = await transferNFTToUser(NFTAddress, transferAddress, userWalletPrivateKey);
+            const netUserNft = await ProductService.deleteUserProductHistory(userEmail, NFTAddress);
             return res.status(200).json({
                 message: 'NFT transferred successfully',
-                status: transferNFT
+                status: transferNFT,
+                result: netUserNft
             });
         } catch (error) {
             console.error('❌ Error fetching users:', error);
