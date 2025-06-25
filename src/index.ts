@@ -30,8 +30,11 @@ SupabaseConnection();
 app.post('/webhooks/orders/paid', express.json(), async (req: Request, res: Response): Promise<void> => {
   try {
     res.status(200).json({ message: 'Webhook received' });
+    console.log("------------------------------------------------------");
     console.log("One order transaction is received.");
-    console.log("------------------------------------------------------\n",req.body);
+    console.log("------------------------------------------------------");
+    console.log(req.body);
+    console.log("------------------------------------------------------");
     const result = await ProductService.getUserProductHistoryProductId(req.body.contact_email, req.body.id);
     if(result){
       await buyProductController(req);
