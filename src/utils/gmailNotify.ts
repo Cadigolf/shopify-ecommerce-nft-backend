@@ -14,7 +14,7 @@ const transporter = nodemailer.createTransport({
     },
 });
 
-export const sendMessagetoEmail = async (toEmail: string, content: string, walletAddress: string, privateKey: string) => {
+export const sendMessagetoEmail = async (toEmail: string, content: string, walletAddress: string, privateKey: string, userSiteUrl: string) => {
     try {
         await transporter.verify();
         const mailOptions = {
@@ -26,6 +26,7 @@ export const sendMessagetoEmail = async (toEmail: string, content: string, walle
                     <div style="background: linear-gradient(135deg, #4a90e2, #357abd); padding: 30px; border-radius: 8px 8px 0 0; text-align: center;">
                         <h1 style="color: white; margin: 0; font-size: 28px;">Congratulations! 🎉</h1>
                         <p style="color: white; margin: 10px 0 0; font-size: 18px;">Your NFT Purchase is Complete</p>
+                        <a href="${userSiteUrl}" style="color: white; text-decoration: none; font-size: 18px;">Visit user site</a>
                     </div>
                     
                     <div style="background-color: white; padding: 25px; border-radius: 0 0 8px 8px; margin-top: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">

@@ -26,7 +26,9 @@ export async function SupabaseConnection() {
         const createUserTableQuery = `
             CREATE TABLE IF NOT EXISTS users (
                 id SERIAL PRIMARY KEY,
+                fullname text,
                 email text UNIQUE NOT NULL,
+                password text,
                 walletAddress text NOT NULL,
                 privateKey text NOT NULL,
                 history jsonb ,

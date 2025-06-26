@@ -35,6 +35,15 @@ const UserService = {
             console.error('❌ Error adding user:', error);
             return null;
         }
+    },
+    updateUser: async (id: string, email: string, fullname: string, password: string) => {
+        try {
+            const { data, error } = await supabase.from('users').update({ fullname, password }).eq('orderid', id);
+            return data;
+        } catch (error) {
+            console.error('❌ Error updating user:', error);
+            return null;
+        }
     }
 }
 

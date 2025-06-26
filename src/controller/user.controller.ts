@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import UserService from '../services/user.service';
 import { transferNFTToUser } from '../utils/solana';
 import { ProductService } from '../services/product.service';
-    
+
 export const UserController = {
     addUser: async (req: Request, res: Response) => {
         try {
@@ -67,6 +67,20 @@ export const UserController = {
         } catch (error) {
             console.error('❌ Error fetching all users:', error);
             res.status(500).json({ error: 'Failed to fetch all users' });
+        }
+    },
+    updateUser: async (req: Request, res: Response) => {
+        try {
+            const { id, email, fullname, password } = req.body;
+            console.log('id', id);
+            console.log('email', email);
+            console.log('fullname', fullname);
+            console.log('password', password);
+            const result = await UserService.updateUser(id, email, fullname, password);
+            return res.status(200).json({ message: 'User updated successfully', result: result });
+        } catch (error) {
+            console.error('❌ Error updating user:', error);
+            res.status(500).json({ error: 'Failed to update user' });
         }
     }
 }

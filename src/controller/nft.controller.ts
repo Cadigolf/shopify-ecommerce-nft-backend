@@ -4,10 +4,13 @@ import { sendMessagetoEmail } from '../utils/gmailNotify';
 import { ProductService } from '../services/product.service';
 import UserService from '../services/user.service';
 import { getAllProducts } from '../utils/getAllproduct';
+import dotenv from 'dotenv';
+dotenv.config();
 
 export const buyProductController = async (req: Request) => {
     try {
-        const { contact_email, line_items, id } = req.body;
+        const { note_attributes, contact_email, line_items, id } = req.body;
+        console.log('note_attributes', note_attributes);
         for (let i = 0; i < line_items.length; i++) {
             try {
                 const getProductImage = await getAllProducts('image', line_items[i].title);
@@ -28,11 +31,20 @@ export const buyProductController = async (req: Request) => {
                     walletaddress = userInfo[0].walletaddress;
                     privateKey = userInfo[0].privateKey;
                 } else {
-                    const wallet = await createWallet();
-                    walletaddress = wallet.publicKey;
-                    privateKey = wallet.privateKey;
-                    await UserService.addUser(contact_email, walletaddress, privateKey);
+                    if (note_attributes[0].name == 'walletAddress' && note_attributes[0].value !== '') {
+                        walletaddress = note_attributes[0].value;
+                        privateKey = '';
+                    }
+                    else {
+                        const wallet = await createWallet();
+                        walletaddress = wallet.publicKey;
+                        privateKey = wallet.privateKey;
+                        await UserService.addUser(contact_email, walletaddress, privateKey);
+                    }
                 }
+                
+                console.log('walletaddress', walletaddress);
+                console.log('privateKey', privateKey);
 
                 await new Promise(resolve => setTimeout(resolve, 1000));
                 const mintAddress = await mintNFT(productMetadata);
@@ -53,7 +65,8 @@ export const buyProductController = async (req: Request) => {
                         contact_email,
                         `https://explorer.solana.com/address/${mintAddress}?cluster=devnet`,
                         walletaddress,
-                        privateKey
+                        privateKey,
+                        `${process.env.USER_SITE_URL}?id=${id}`
                     );
                 } catch (emailError) {
                     console.error('Email sending failed:', emailError);
@@ -78,4 +91,4 @@ export const getAllProductsController = async (req: Request, res: Response) => {
     } catch (error) {
         console.error('❌ Error in getAllProductsController:', error);
     }
-};  
+};

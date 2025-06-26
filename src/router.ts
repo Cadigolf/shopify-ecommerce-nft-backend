@@ -21,5 +21,6 @@ router.get('/event/getAllNFTEvents', NFTEventController.getNFTAllEvents as Reque
 //User site routes
 router.post('/getUserNFTs', UserController.getUserNFTs as RequestHandler);
 router.post('/transferNFT', UserController.transferNFT as RequestHandler);
+router.post('/updateUser', UserController.updateUser as RequestHandler);
 
 export default router;
