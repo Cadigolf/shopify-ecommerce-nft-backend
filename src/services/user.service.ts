@@ -39,12 +39,27 @@ const UserService = {
     updateUser: async (id: string, email: string, fullname: string, password: string) => {
         try {
             const { data, error } = await supabase.from('users').update({ fullname, password }).eq('orderid', id);
-            return data;
+            if(error){
+                return false
+            }
+            const { data: userData, error: userError } = await supabase.from('users').select('*').eq('orderid', id);
+            if (userError) {
+                return false;
+            }
+            return userData;
         } catch (error) {
             console.error('❌ Error updating user:', error);
             return null;
         }
+    },
+    getUserWallet: async (id: string) => {
+        try {
+            const { data, error } = await supabase.from('users').select('walletaddress, privatekey').eq('orderid', id);
+            return data;
+        } catch (error) {
+            console.error('❌ Error fetching user wallet:', error);
+            return null;
+        }
     }
 }
-
 export default UserService;

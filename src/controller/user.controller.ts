@@ -77,10 +77,24 @@ export const UserController = {
             console.log('fullname', fullname);
             console.log('password', password);
             const result = await UserService.updateUser(id, email, fullname, password);
+            if (result === false) {
+                res.status(500).json({ error: 'Failed to update user' });
+            }
             return res.status(200).json({ message: 'User updated successfully', result: result });
         } catch (error) {
             console.error('❌ Error updating user:', error);
             res.status(500).json({ error: 'Failed to update user' });
+        }
+    },
+    getUserWallet: async (req: Request, res: Response) => {
+        try {
+            const { id } = req.body;
+            console.log('id', id);
+            const result = await UserService.getUserWallet(id);
+            return res.status(200).json({ message: 'User wallet fetched successfully', result: result });
+        } catch (error) {
+            console.error('❌ Error fetching user wallet:', error);
+            res.status(500).json({ error: 'Failed to fetch user wallet' });
         }
     }
 }
