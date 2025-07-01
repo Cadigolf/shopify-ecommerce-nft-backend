@@ -40,8 +40,8 @@ export const buyProductController = async (req: Request) => {
                         const wallet = await createWallet();
                         walletaddress = wallet.publicKey;
                         privateKey = wallet.privateKey;
-                        await UserService.addUser(contact_email, walletaddress, privateKey);
                     }
+                    await UserService.addUser(contact_email, walletaddress, privateKey);
                 }
 
                 console.log('walletaddress', walletaddress);
