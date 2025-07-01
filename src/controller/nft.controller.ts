@@ -14,6 +14,9 @@ export const buyProductController = async (req: Request) => {
         for (let i = 0; i < line_items.length; i++) {
             try {
                 const getProductImage = await getAllProducts('image', line_items[i].title);
+                console.log('getProductImage', getProductImage);
+                console.log('line_items[i].title', line_items[i].title);
+                console.log('line_items[i].name', line_items[i].name);
                 const productMetadata = {
                     id: line_items[i].id,
                     title: line_items[i].title.substring(0, 10),
@@ -29,9 +32,9 @@ export const buyProductController = async (req: Request) => {
                 let privateKey = '';
                 if (userInfo && userInfo.length > 0) {
                     walletaddress = userInfo[0].walletaddress;
-                    privateKey = userInfo[0].privateKey;
+                    privateKey = userInfo[0].privatekey;
                 } else {
-                    if (note_attributes[0].name == 'walletAddress' && note_attributes[0].value !== '') {
+                    if (note_attributes.length > 0 && note_attributes[0].name == 'walletAddress' && note_attributes[0].value !== '') {
                         walletaddress = note_attributes[0].value;
                         privateKey = '';
                     }
@@ -42,7 +45,7 @@ export const buyProductController = async (req: Request) => {
                         await UserService.addUser(contact_email, walletaddress, privateKey);
                     }
                 }
-                
+
                 console.log('walletaddress', walletaddress);
                 console.log('privateKey', privateKey);
 
