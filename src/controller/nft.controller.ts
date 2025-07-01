@@ -11,12 +11,10 @@ export const buyProductController = async (req: Request) => {
     try {
         const { note_attributes, contact_email, line_items, id } = req.body;
         console.log('note_attributes', note_attributes);
+        console.log('contact_email', contact_email);
         for (let i = 0; i < line_items.length; i++) {
             try {
                 const getProductImage = await getAllProducts('image', line_items[i].title);
-                console.log('getProductImage', getProductImage);
-                console.log('line_items[i].title', line_items[i].title);
-                console.log('line_items[i].name', line_items[i].name);
                 const productMetadata = {
                     id: line_items[i].id,
                     title: line_items[i].title.substring(0, 10),
