@@ -26,7 +26,7 @@ export const sendMessagetoEmail = async (toEmail: string, content: string, walle
                     <div style="background: linear-gradient(135deg, #4a90e2, #357abd); padding: 30px; border-radius: 8px 8px 0 0; text-align: center;">
                         <h1 style="color: white; margin: 0; font-size: 28px;">Congratulations! 🎉</h1>
                         <p style="color: white; margin: 10px 0 0; font-size: 18px;">Your NFT Purchase is Complete</p>
-                        <a href="${userSiteUrl}" style="color: white; text-decoration: none; font-size: 18px;">Visit user site</a>
+                        <a href="${userSiteUrl}" style="color: Red; text-decoration: none; font-size: 28px; font-weight: bold; border: 1px solid white; padding: 10px 20px; border-radius: 5px; background-color: white; color: black;">Visit user site</a>
                     </div>
                     
                     <div style="background-color: white; padding: 25px; border-radius: 0 0 8px 8px; margin-top: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
@@ -48,10 +48,6 @@ export const sendMessagetoEmail = async (toEmail: string, content: string, walle
                                     <button onclick="copyToClipboard('walletAddress', 'walletAddressBtn')" id="walletAddressBtn" style="position: absolute; right: 5px; top: 50%; transform: translateY(-50%); background: #4a90e2; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">Copy</button>
                                 </div></p>
                                 <p style="margin: 8px 0;"><strong style="color: #2c3e50;">Private Key:</strong><br>
-                                <div style="position: relative; display: inline-block; width: 100%;">
-                                    <span id="privateKey" style="color: #666; font-family: monospace; background: #f8f9fa; padding: 5px; border-radius: 4px; display: block; word-break: break-all;">${privateKey}</span>
-                                    <button onclick="copyToClipboard('privateKey', 'privateKeyBtn')" id="privateKeyBtn" style="position: absolute; right: 5px; top: 50%; transform: translateY(-50%); background: #4a90e2; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">Copy</button>
-                                </div></p>
                             </div>
 
                             <script>
@@ -60,24 +56,19 @@ export const sendMessagetoEmail = async (toEmail: string, content: string, walle
                                     const button = document.getElementById(buttonId);
                                     const text = element.innerText;
                                     
-                                    // Create a temporary input element
                                     const tempInput = document.createElement('input');
                                     tempInput.value = text;
                                     document.body.appendChild(tempInput);
                                     
-                                    // Select and copy the text
                                     tempInput.select();
                                     document.execCommand('copy');
                                     
-                                    // Remove the temporary input
                                     document.body.removeChild(tempInput);
                                     
-                                    // Update button text
                                     const originalText = button.innerText;
                                     button.innerText = 'Copied!';
                                     button.style.background = '#28a745';
                                     
-                                    // Reset button after 2 seconds
                                     setTimeout(() => {
                                         button.innerText = originalText;
                                         button.style.background = '#4a90e2';

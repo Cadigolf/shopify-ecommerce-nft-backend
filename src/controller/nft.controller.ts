@@ -10,8 +10,7 @@ dotenv.config();
 export const buyProductController = async (req: Request) => {
     try {
         const { note_attributes, contact_email, line_items, id } = req.body;
-        console.log('note_attributes', note_attributes);
-        console.log('contact_email', contact_email);
+        
         for (let i = 0; i < line_items.length; i++) {
             try {
                 const getProductImage = await getAllProducts('image', line_items[i].title);
@@ -43,9 +42,6 @@ export const buyProductController = async (req: Request) => {
                     }
                     await UserService.addUser(contact_email, walletaddress, privateKey);
                 }
-
-                console.log('walletaddress', walletaddress);
-                console.log('privateKey', privateKey);
 
                 await new Promise(resolve => setTimeout(resolve, 1000));
                 const mintAddress = await mintNFT(productMetadata);
