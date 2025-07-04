@@ -54,7 +54,7 @@ const UserService = {
     },
     getUserWallet: async (id: string) => {
         try {
-            const { data, error } = await supabase.from('users').select('walletaddress, privatekey').eq('orderid', id);
+            const { data, error } = await supabase.from('users').select('walletaddress').eq('orderid', id);
             return data;
         } catch (error) {
             console.error('❌ Error fetching user wallet:', error);
