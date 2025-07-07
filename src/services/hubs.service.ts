@@ -53,7 +53,6 @@ const HubsService = {
             if (error) {
                 return false;
             }
-            console.log("data", data);
             return data;
         } catch (error) {
             console.error('❌ Error getting user by email and wallet address:', error);

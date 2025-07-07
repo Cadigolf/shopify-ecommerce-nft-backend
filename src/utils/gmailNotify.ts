@@ -26,7 +26,7 @@ export const sendMessagetoEmail = async (toEmail: string, content: string, walle
                     <div style="background: linear-gradient(135deg, #4a90e2, #357abd); padding: 30px; border-radius: 8px 8px 0 0; text-align: center;">
                         <h1 style="color: white; margin: 0; font-size: 28px;">Congratulations! 🎉</h1>
                         <p style="color: white; margin: 10px 0 0; font-size: 18px;">Your NFT Purchase is Complete</p>
-                        <a href="${userSiteUrl}" style="color: Red; text-decoration: none; font-size: 28px; font-weight: bold; border: 1px solid white; padding: 10px 20px; border-radius: 5px; background-color: white; color: black;">Visit user site</a>
+                        <a href="https://www.hubsai.io/" style="color: Red; text-decoration: none; font-size: 28px; font-weight: bold; border: 1px solid white; padding: 10px 20px; border-radius: 5px; background-color: white; color: black;">Visit user site</a>
                     </div>
                     
                     <div style="background-color: white; padding: 25px; border-radius: 0 0 8px 8px; margin-top: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">

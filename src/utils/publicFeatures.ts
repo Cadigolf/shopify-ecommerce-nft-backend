@@ -84,8 +84,6 @@ export const mintNFT = async (privateKey: string, metadata: any): Promise<string
                 preflightCommitment: "confirmed"
             }
         });
-        console.log("NFT minted successfully!");
-        console.log(`https://explorer.solana.com/address/${mint.publicKey.toString()}?cluster=devnet`);
         await NFTEventService.saveNFTEvent("mint", { ...metadata, mintAddress: mint.publicKey.toString(), createAuthor: umi.identity.publicKey.toString() });
         return mint.publicKey.toString()
     } catch (error: any) {

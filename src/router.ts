@@ -31,5 +31,7 @@ router.post('/auth/signin', HubsAIController.signIn as RequestHandler);
 router.post('/auth/claim-wallet-address', HubsAIController.claimWalletAddress as RequestHandler);
 router.post('/auth/setup-profile', HubsAIController.setupProfile as RequestHandler);
 router.post('/auth/update-profile', HubsAIController.updateProfile as RequestHandler);
+router.post('/getUserNFTs', UserController.getUserNFTs as RequestHandler);
+
 
 export default router;
