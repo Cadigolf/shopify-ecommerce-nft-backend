@@ -22,121 +22,54 @@ export const sendMessagetoEmail = async (toEmail: string, content: string, walle
             to: toEmail,
             subject: '🎉 Your NFT Purchase Confirmation - Next Steps Inside!',
             html: `
-                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f8f9fa; border-radius: 8px;">
-                    <div style="background: linear-gradient(135deg, #4a90e2, #357abd); padding: 30px; border-radius: 8px 8px 0 0; text-align: center;">
-                        <h1 style="color: white; margin: 0; font-size: 28px;">Congratulations! 🎉</h1>
-                        <p style="color: white; margin: 10px 0 0; font-size: 18px;">Your NFT Purchase is Complete</p>
-                        <a href="https://www.hubsai.io/" style="color: Red; text-decoration: none; font-size: 28px; font-weight: bold; border: 1px solid white; padding: 10px 20px; border-radius: 5px; background-color: white; color: black;">Visit user site</a>
-                    </div>
-                    
-                    <div style="background-color: white; padding: 25px; border-radius: 0 0 8px 8px; margin-top: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                        <div style="text-align: center; margin-bottom: 25px;">
-                            <p style="color: #666; font-size: 16px; margin: 0;">Thank you for your purchase! We're excited to have you join our NFT community.</p>
-                        </div>
-
-                        <div style="background-color: #f1f8ff; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #4a90e2;">
-                            <h2 style="color: #2c3e50; margin-top: 0; font-size: 22px;">Your NFT Details</h2>
-                            <p style="color: #34495e; font-size: 16px;">View your NFT: <a href="${content}" style="color: #4a90e2; text-decoration: none; font-weight: bold;">Click here to view your NFT</a></p>
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+                    <div style="background-color: #f8f9fa; padding: 30px; border-radius: 8px;">
+                        <div style="text-align: center; margin-bottom: 30px;">
+                            <h1 style="color: #333; margin: 0; font-size: 24px;">NFT Purchase Confirmation</h1>
+                            <p style="color: #666; margin: 10px 0 20px; font-size: 16px;">Thank you for your purchase</p>
+                            <a href="https://www.hubsai.io/" style="display: inline-block; text-decoration: none; font-size: 16px; padding: 10px 20px; border-radius: 4px; background-color: #357abd; color: white;">Visit HubsAI</a>
                         </div>
                         
-                        <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0; border: 1px solid #e9ecef;">
-                            <h3 style="color: #2c3e50; margin-top: 0; font-size: 20px;">📱 Wallet Information</h3>
-                            <div style="background-color: white; padding: 15px; border-radius: 6px; margin: 10px 0;">
-                                <p style="margin: 8px 0;"><strong style="color: #2c3e50;">Wallet Address:</strong><br>
-                                <div style="position: relative; display: inline-block; width: 100%;">
-                                    <span id="walletAddress" style="color: #666; font-family: monospace; background: #f8f9fa; padding: 5px; border-radius: 4px; display: block; word-break: break-all;">${walletAddress}</span>
-                                    <button onclick="copyToClipboard('walletAddress', 'walletAddressBtn')" id="walletAddressBtn" style="position: absolute; right: 5px; top: 50%; transform: translateY(-50%); background: #4a90e2; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">Copy</button>
-                                </div></p>
-                                <p style="margin: 8px 0;"><strong style="color: #2c3e50;">Private Key:</strong><br>
-                            </div>
-
-                            <script>
-                                function copyToClipboard(elementId, buttonId) {
-                                    const element = document.getElementById(elementId);
-                                    const button = document.getElementById(buttonId);
-                                    const text = element.innerText;
-                                    
-                                    const tempInput = document.createElement('input');
-                                    tempInput.value = text;
-                                    document.body.appendChild(tempInput);
-                                    
-                                    tempInput.select();
-                                    document.execCommand('copy');
-                                    
-                                    document.body.removeChild(tempInput);
-                                    
-                                    const originalText = button.innerText;
-                                    button.innerText = 'Copied!';
-                                    button.style.background = '#28a745';
-                                    
-                                    setTimeout(() => {
-                                        button.innerText = originalText;
-                                        button.style.background = '#4a90e2';
-                                    }, 2000);
-                                }
-                            </script>
-
-                            <div style="margin-top: 15px; padding: 10px; background-color: #e8f5e9; border-radius: 4px;">
-                                <p style="margin: 0; color: #2c3e50; font-size: 14px;">💡 Click the "Copy" button next to each value to easily copy it to your clipboard.</p>
-                            </div>
+                        <div style="background-color: white; padding: 25px; border-radius: 8px; margin-bottom: 20px;">
+                            <h2 style="color: #333; margin: 0 0 20px; font-size: 20px;">Transaction Details</h2>
+                            <p style="color: #666; margin: 0 0 20px;">Your NFT purchase has been successfully completed. You can view your NFT using the link below:</p>
+                            <p style="margin: 0;"><a href="${content}" style="color: #357abd; text-decoration: none;">View your NFT</a></p>
                         </div>
 
-                        <div style="background-color: #fff3cd; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #ffc107;">
-                            <h3 style="color: #856404; margin-top: 0; font-size: 20px;">⚠️ Security First!</h3>
-                            <ul style="color: #856404; padding-left: 20px; margin: 15px 0;">
-                                <li style="margin: 8px 0;">Never share your private key with anyone - not even our support team</li>
-                                <li style="margin: 8px 0;">Store your private key in a secure password manager like 1Password or LastPass</li>
-                                <li style="margin: 8px 0;">Consider using a hardware wallet (like Ledger) for maximum security</li>
-                                <li style="margin: 8px 0;">Enable two-factor authentication on your email and any related accounts</li>
-                                <li style="margin: 8px 0;">Be cautious of phishing attempts - we will never ask for your private key</li>
+                        <div style="background-color: white; padding: 25px; border-radius: 8px; margin-bottom: 20px;">
+                            <h2 style="color: #333; margin: 0 0 20px; font-size: 20px;">Wallet Information</h2>
+                            <p style="color: #666; margin: 0 0 10px;">Your wallet address:</p>
+                            <p style="color: #333; background-color: #f8f9fa; padding: 10px; border-radius: 4px; word-break: break-all; font-family: monospace; margin: 0;">${walletAddress}</p>
+                        </div>
+
+                        <div style="background-color: white; padding: 25px; border-radius: 8px; margin-bottom: 20px;">
+                            <h2 style="color: #333; margin: 0 0 20px; font-size: 20px;">Important Security Information</h2>
+                            <ul style="color: #666; padding-left: 20px; margin: 0;">
+                                <li style="margin: 10px 0;">Never share your private key with anyone</li>
+                                <li style="margin: 10px 0;">Store your private key securely using a password manager</li>
+                                <li style="margin: 10px 0;">Consider using a hardware wallet for additional security</li>
+                                <li style="margin: 10px 0;">Enable two-factor authentication on your accounts</li>
                             </ul>
                         </div>
 
-                        <div style="margin: 25px 0;">
-                            <h3 style="color: #2c3e50; font-size: 20px;">📱 How to View Your NFT</h3>
-                            <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px;">
-                                <ol style="color: #34495e; padding-left: 20px; margin: 0;">
-                                    <li style="margin: 12px 0;">
-                                        <strong>Download Phantom Wallet</strong><br>
-                                        <a href="https://phantom.app/" style="color: #4a90e2; text-decoration: none;">Download for Chrome/Brave</a> or 
-                                        <a href="https://phantom.app/" style="color: #4a90e2; text-decoration: none;">Download for Mobile</a>
-                                    </li>
-                                    <li style="margin: 12px 0;">
-                                        <strong>Create or Import Wallet</strong><br>
-                                        Click "Import Private Key" and enter your private key
-                                    </li>
-                                    <li style="margin: 12px 0;">
-                                        <strong>View Your NFT</strong><br>
-                                        Your NFT will automatically appear in your wallet's "Collectibles" tab
-                                    </li>
-                                    <li style="margin: 12px 0;">
-                                        <strong>Verify Ownership</strong><br>
-                                        Click on your NFT to view its details and verify it's the correct one
-                                    </li>
-                                </ol>
-                            </div>
-                        </div>
-
-                        <div style="background-color: #e8f5e9; padding: 20px; border-radius: 8px; margin: 20px 0;">
-                            <h3 style="color: #2c3e50; margin-top: 0; font-size: 20px;">❓ Frequently Asked Questions</h3>
-                            <div style="margin: 15px 0;">
-                                <p style="color: #2c3e50; font-weight: bold; margin: 10px 0;">Q: What if I lose my private key?</p>
-                                <p style="color: #34495e; margin: 5px 0;">A: Private keys cannot be recovered. Always keep multiple secure backups in different locations.</p>
-                            </div>
-                            <div style="margin: 15px 0;">
-                                <p style="color: #2c3e50; font-weight: bold; margin: 10px 0;">Q: How do I keep my NFT safe?</p>
-                                <p style="color: #34495e; margin: 5px 0;">A: Use a hardware wallet, enable 2FA, and never share your private key. Consider using a dedicated device for crypto transactions.</p>
-                            </div>
-                            <div style="margin: 15px 0;">
-                                <p style="color: #2c3e50; font-weight: bold; margin: 10px 0;">Q: Can I transfer my NFT to another wallet?</p>
-                                <p style="color: #34495e; margin: 5px 0;">A: Yes, you can transfer your NFT to another wallet using the "Send" function in Phantom Wallet.</p>
-                            </div>
+                        <div style="background-color: white; padding: 25px; border-radius: 8px; margin-bottom: 20px;">
+                            <h2 style="color: #333; margin: 0 0 20px; font-size: 20px;">Viewing Your NFT</h2>
+                            <ol style="color: #666; padding-left: 20px; margin: 0;">
+                                <li style="margin: 10px 0;">
+                                    Download Phantom Wallet from <a href="https://phantom.app/" style="color: #357abd; text-decoration: none;">phantom.app</a>
+                                </li>
+                                <li style="margin: 10px 0;">
+                                    Create a new wallet or import using your private key
+                                </li>
+                                <li style="margin: 10px 0;">
+                                    Your NFT will appear in the "Collectibles" section
+                                </li>
+                            </ol>
                         </div>
 
                         <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
-                            <p style="color: #666; font-size: 14px; margin: 5px 0;">Need help? Our support team is here for you!</p>
-                            <p style="color: #4a90e2; font-size: 14px; margin: 5px 0;">📧 support@yourcompany.com</p>
-                            <p style="color: #666; font-size: 12px; margin: 15px 0 0;">This is an automated message, please do not reply directly to this email.</p>
+                            <p style="color: #666; font-size: 14px; margin: 0 0 10px;">For support inquiries, please contact:</p>
+                            <p style="color: #357abd; font-size: 14px; margin: 0;">support@hubsai.io</p>
                         </div>
                     </div>
                 </div>
