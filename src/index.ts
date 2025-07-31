@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import router from "./router";
-import { SupabaseConnection } from './utils/supabase';
+// import { SupabaseConnection } from './utils/supabase';
 import cors from 'cors';
 import { buyProductController } from './controller/nft.controller';
 import { ProductService } from './services/product.service';
@@ -25,7 +25,7 @@ app.use(express.json());
 app.use(express.raw());
 
 app.use('/api', router);
-SupabaseConnection();
+// SupabaseConnection();
 
 app.post('/webhooks/orders/paid', express.json(), async (req: Request, res: Response): Promise<void> => {
   try {
