@@ -5,19 +5,12 @@ import { createWallet } from "../utils/solana";
 export const HubsAIController = {
   signUp: async (req: Request, res: Response) => {
     try {
-      const { fullname, email, password } = req.body;
+      const { email } = req.body;
       const existUSer = await HubsService.getUserByEmail(email);
       if (!existUSer || existUSer.length === 0) {
         const wallet = await createWallet();
         const walletaddress = wallet.publicKey;
-        const privateKey = wallet.privateKey;
-        const result = await HubsService.addUser(
-          fullname,
-          email,
-          password,
-          walletaddress,
-          privateKey,
-        );
+        const result = await HubsService.addUser(email, walletaddress);
         result === null
           ? res.status(400).json({ message: "User Add failed", success: false })
           : res
@@ -28,7 +21,7 @@ export const HubsAIController = {
                 success: true,
               });
       } else {
-        const result = await HubsService.updateUser(email, fullname, password);
+        const result = await HubsService.updateUser(email);
         result === false
           ? res
               .status(400)
