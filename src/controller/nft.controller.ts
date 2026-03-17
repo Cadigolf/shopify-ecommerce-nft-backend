@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { createWallet, mintNFT, transferNFT } from '../utils/solana';
-import { sendMessagetoEmail } from '../utils/gmailNotify';
+import { sendMessagetoEmail } from '../utils/emailNotify';
 import { ProductService } from '../services/product.service';
 import UserService from '../services/user.service';
 import { getAllProducts } from '../utils/getAllproduct';
