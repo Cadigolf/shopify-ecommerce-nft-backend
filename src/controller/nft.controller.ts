@@ -10,8 +10,6 @@ dotenv.config();
 export const buyProductController = async (req: Request) => {
     try {
         const { note_attributes, contact_email, line_items, id } = req.body;
-        console.log("‼️req.body:", req.body)
-        console.log("👝user wallet address:", note_attributes[0])
         for (let i = 0; i < line_items.length; i++) {
             try {
                 const getProductImage = await getAllProducts('image', line_items[i].title);
@@ -53,7 +51,6 @@ export const buyProductController = async (req: Request) => {
 
                 await ProductService.saveUserProductHistory(contact_email, { ...productMetadata, mintAddress }, id);
                 await new Promise(resolve => setTimeout(resolve, 15000));
-                console.log("🔫user wallet address:", walletaddress)
                 const transfer = await transferNFT(mintAddress, walletaddress);
                 if (!transfer) {
                     throw new Error('Failed to transfer NFT');
