@@ -3,7 +3,7 @@ import { supabase } from "../utils/supabase";
 const UserService = {
     getAllUsers: async () => {
         try {
-            const { data, error } = await supabase.from('users').select('*');
+            const { data, error } = await supabase.from('users').select('id, email, walletaddress, updated_at');
             return data;
         } catch (error) {
             console.error('❌ Error getting all users:', error);
@@ -12,7 +12,7 @@ const UserService = {
     },
     getUserByEmail: async (email: string) => {
         try {
-            const { data, error } = await supabase.from('users').select('*').eq('email', email);
+            const { data, error } = await supabase.from('users').select('id, email, walletaddress, updated_at').eq('email', email);
             if (error) {
                 console.error('❌ Error getting user by email:', error);
                 return null;
@@ -42,7 +42,7 @@ const UserService = {
             if(error){
                 return false
             }
-            const { data: userData, error: userError } = await supabase.from('users').select('*').eq('orderid', id);
+            const { data: userData, error: userError } = await supabase.from('users').select('id, email, walletaddress, updated_at').eq('orderid', id);
             if (userError) {
                 return false;
             }

@@ -3,7 +3,7 @@ import { supabase } from "../utils/supabase";
 const HubsService = {
     getUserByEmail: async (email: string) => {
         try {
-            const { data, error } = await supabase.from('users').select('*').eq('email', email);
+            const { data, error } = await supabase.from('users').select('id, email, walletaddress, updated_at').eq('email', email);
             if (error) {
                 console.error('❌ Error getting user by email:', error);
                 return null;
@@ -21,7 +21,7 @@ const HubsService = {
                 console.error('❌ Error adding user:', error);
                 return false;
             }
-            const { data: userData, error: userError } = await supabase.from('users').select('*').eq('email', email);
+            const { data: userData, error: userError } = await supabase.from('users').select('id, email, walletaddress, updated_at').eq('email', email);
             if (userError) {
                 return false;
             }
@@ -37,7 +37,7 @@ const HubsService = {
             if (error) {
                 return false
             }
-            const { data: userData, error: userError } = await supabase.from('users').select('*').eq('email', email);
+            const { data: userData, error: userError } = await supabase.from('users').select('id, email, walletaddress, updated_at').eq('email', email);
             if (userError) {
                 return false;
             }
@@ -82,7 +82,7 @@ const HubsService = {
 
             const { data: userData, error: userError } = await supabase
                 .from('users')
-                .select('*')
+                .select('id, email, walletaddress, updated_at')
                 .eq('email', email);
 
             if (userError) {
@@ -103,7 +103,7 @@ const HubsService = {
             if (error) {
                 return false;
             }
-            const { data: userData, error: userError } = await supabase.from('users').select('*').eq('email', email);
+            const { data: userData, error: userError } = await supabase.from('users').select('id, email, walletaddress, updated_at').eq('email', email);
             if (userError) {
                 return false;
             }
