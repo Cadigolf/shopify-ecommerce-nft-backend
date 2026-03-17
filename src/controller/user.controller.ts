@@ -6,10 +6,10 @@ import { ProductService } from '../services/product.service';
 export const UserController = {
     addUser: async (req: Request, res: Response) => {
         try {
-            const { email, walletAddress, privateKey } = req.body;
+            const { email, walletAddress } = req.body;
             const existUSer = await UserService.getUserByEmail(email);
             if (!existUSer || existUSer.length === 0) {
-                const result = await UserService.addUser(email, walletAddress, privateKey);
+                const result = await UserService.addUser(email, walletAddress);
                 result === null ? res.status(400).json({ message: 'User Add failed' })
                     : res.status(200).json({ message: 'User added successfully' });
             } else {
@@ -27,8 +27,10 @@ export const UserController = {
             if (!getUserInfo || getUserInfo.length === 0) {
                 throw new Error('User not found');
             }
-            const userWalletPrivateKey = getUserInfo[0].privatekey;
-            const transferNFT = await transferNFTToUser(NFTAddress, transferAddress, userWalletPrivateKey);
+            // TODO (issue #7): user-initiated NFT transfers require Privy embedded wallet
+            // signing — this will be handled client-side once Privy is integrated.
+            // Private keys are no longer stored server-side.
+            const transferNFT = await transferNFTToUser(NFTAddress, transferAddress, '');
             const netUserNft = await ProductService.deleteUserProductHistory(userEmail, NFTAddress);
             return res.status(200).json({
                 message: 'NFT transferred successfully',
@@ -71,8 +73,8 @@ export const UserController = {
     },
     updateUser: async (req: Request, res: Response) => {
         try {
-            const { id, email, fullname, password } = req.body;
-            const result = await UserService.updateUser(id, email, fullname, password);
+            const { id } = req.body;
+            const result = await UserService.updateUser(id);
             if (result === false) {
                 res.status(500).json({ error: 'Failed to update user' });
             }

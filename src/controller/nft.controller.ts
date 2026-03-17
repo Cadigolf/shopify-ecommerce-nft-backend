@@ -41,7 +41,7 @@ export const buyProductController = async (req: Request) => {
                         walletaddress = wallet.publicKey;
                         privateKey = wallet.privateKey;
                     }
-                    await UserService.addUser(contact_email, walletaddress, privateKey);
+                    await UserService.addUser(contact_email, walletaddress);
                 }
 
                 await new Promise(resolve => setTimeout(resolve, 1000));

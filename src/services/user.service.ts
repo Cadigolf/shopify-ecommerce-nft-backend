@@ -23,9 +23,9 @@ const UserService = {
             return null;
         }
     },
-    addUser: async (email: string, walletaddress: string, privatekey: string) => {
+    addUser: async (email: string, walletaddress: string) => {
         try {
-            const { data, error } = await supabase.from('users').insert({ email, walletaddress, privatekey });
+            const { data, error } = await supabase.from('users').insert({ email, walletaddress });
             if (error) {
                 console.error('❌ Error adding user:', error);
                 return null;
@@ -36,9 +36,9 @@ const UserService = {
             return null;
         }
     },
-    updateUser: async (id: string, email: string, fullname: string, password: string) => {
+    updateUser: async (id: string) => {
         try {
-            const { data, error } = await supabase.from('users').update({ fullname, password }).eq('orderid', id);
+            const { data, error } = await supabase.from('users').update({ updated_at: new Date().toISOString() }).eq('orderid', id);
             if(error){
                 return false
             }

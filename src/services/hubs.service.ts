@@ -14,9 +14,9 @@ const HubsService = {
             return null;
         }
     },
-    addUser: async (fullname: string, email: string, password: string, walletaddress: string, privatekey: string) => {
+    addUser: async (email: string, walletaddress: string) => {
         try {
-            const { data, error } = await supabase.from('users').insert({ fullname, email, password, walletaddress, privatekey });
+            const { data, error } = await supabase.from('users').insert({ email, walletaddress });
             if (error) {
                 console.error('❌ Error adding user:', error);
                 return false;
@@ -31,9 +31,9 @@ const HubsService = {
             return null;
         }
     },
-    updateUser: async (email: string, fullname: string, password: string) => {
+    updateUser: async (email: string) => {
         try {
-            const { data, error } = await supabase.from('users').update({ fullname, password }).eq('email', email);
+            const { data, error } = await supabase.from('users').update({ updated_at: new Date().toISOString() }).eq('email', email);
             if (error) {
                 return false
             }
@@ -69,19 +69,10 @@ const HubsService = {
         avatarUrl?: string
     ) => {
         try {
-            const updateData: any = {
-                username,
-                country,
-                interests: Array.isArray(interests) ? interests : [],
-                updated_at: new Date().toISOString()
-            };
-
-            if (avatarUrl) {
-                updateData.avatar = avatarUrl;
-            }
+            // Profile fields (username, country, interests, avatar) are managed by Privy
             const { data, error } = await supabase
                 .from('users')
-                .update(updateData)
+                .update({ updated_at: new Date().toISOString() })
                 .eq('email', email);
 
             if (error) {
@@ -107,7 +98,8 @@ const HubsService = {
     },
     updateUserProfile: async (email: string, username: string, country: string, fullname: string) => {
         try {
-            const { data, error } = await supabase.from('users').update({ username, country, fullname }).eq('email', email);
+            // Profile fields (username, country, fullname) are managed by Privy
+            const { data, error } = await supabase.from('users').update({ updated_at: new Date().toISOString() }).eq('email', email);
             if (error) {
                 return false;
             }

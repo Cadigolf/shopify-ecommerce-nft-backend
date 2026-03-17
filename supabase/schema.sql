@@ -3,36 +3,27 @@
 -- ============================================================
 -- To apply: paste into the Supabase SQL editor and run.
 --
--- PENDING SECURITY CHANGES (tracked in issue #2):
---   - `users.privatekey` column to be dropped once Privy
---     embedded wallets are integrated
---   - `users.password` column to be hashed with bcrypt
---     before storing (currently plaintext)
+-- Auth and user profile data (name, avatar, country, etc.)
+-- are managed by Privy. Supabase stores only what Privy
+-- doesn't own: wallet address, order linkage, and NFT history.
 -- ============================================================
 
 
 -- ------------------------------------------------------------
 -- users
--- Stores customer accounts, Solana wallets, and NFT history.
+-- Links a Privy-authenticated user (by email) to their
+-- Solana wallet and NFT purchase history.
 -- ------------------------------------------------------------
 create table if not exists public.users (
-  id          uuid primary key default gen_random_uuid(),
-  email       text not null unique,
-  fullname    text,
-  password    text,                        -- TODO issue #2: store bcrypt hash, not plaintext
-  walletaddress text,                      -- Solana public key
-  privatekey  text,                        -- TODO issue #2: drop this column once Privy is integrated
-  orderid     text,                        -- Shopify order ID
-  history     jsonb default '[]'::jsonb,  -- array of NFT purchase objects (see note below)
-  username    text,
-  country     text,
-  interests   jsonb default '[]'::jsonb,
-  avatar      text,                        -- URL to profile image
-  updated_at  timestamptz
+  id            uuid primary key default gen_random_uuid(),
+  email         text not null unique,
+  walletaddress text,        -- Solana public key
+  orderid       text,        -- Shopify order ID
+  history       jsonb default '[]'::jsonb,  -- array of NFT purchase objects
+  updated_at    timestamptz
 );
 
--- Index for the most common lookup pattern
-create index if not exists users_email_idx on public.users (email);
+create index if not exists users_email_idx   on public.users (email);
 create index if not exists users_orderid_idx on public.users (orderid);
 
 -- history array element shape (for reference, not enforced by DB):
@@ -54,9 +45,9 @@ create index if not exists users_orderid_idx on public.users (orderid);
 -- Event log for NFT operations (mints, transfers, etc.)
 -- ------------------------------------------------------------
 create table if not exists public.tokens (
-  id        uuid primary key default gen_random_uuid(),
-  event     text not null,       -- e.g. "mint", "transfer", "metadata_upload"
-  metadata  jsonb,               -- arbitrary event payload
+  id         uuid primary key default gen_random_uuid(),
+  event      text not null,       -- e.g. "mint", "transfer"
+  metadata   jsonb,               -- arbitrary event payload
   created_at timestamptz default now()
 );
 
