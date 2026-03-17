@@ -64,7 +64,6 @@ export const buyProductController = async (req: Request) => {
                         contact_email,
                         `https://explorer.solana.com/address/${mintAddress}?cluster=devnet`,
                         walletaddress,
-                        privateKey,
                         `${process.env.USER_SITE_URL}?id=${id}`
                     );
                 } catch (emailError) {

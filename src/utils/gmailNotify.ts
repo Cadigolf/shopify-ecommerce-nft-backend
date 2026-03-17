@@ -14,7 +14,7 @@ const transporter = nodemailer.createTransport({
     },
 });
 
-export const sendMessagetoEmail = async (toEmail: string, content: string, walletAddress: string, privateKey: string, userSiteUrl: string) => {
+export const sendMessagetoEmail = async (toEmail: string, content: string, walletAddress: string, userSiteUrl: string) => {
     try {
         await transporter.verify();
         const mailOptions = {
