@@ -1,17 +1,14 @@
 import { Request, Response } from "express";
 import HubsService from "../services/hubs.service";
-import { createWallet } from "../utils/solana";
 
 export const HubsAIController = {
   signUp: async (req: Request, res: Response) => {
     try {
-      const { email } = req.body;
-      const existUSer = await HubsService.getUserByEmail(email);
-      if (!existUSer || existUSer.length === 0) {
-        const wallet = await createWallet();
-        const walletaddress = wallet.publicKey;
-        const result = await HubsService.addUser(email, walletaddress);
-        result === null
+      const { email, walletAddress } = req.body;
+      const existingUser = await HubsService.getUserByEmail(email);
+      if (!existingUser || existingUser.length === 0) {
+        const result = await HubsService.addUser(email, walletAddress || '');
+        result === null || result === false
           ? res.status(400).json({ message: "User Add failed", success: false })
           : res
               .status(200)
@@ -21,7 +18,11 @@ export const HubsAIController = {
                 success: true,
               });
       } else {
-        const result = await HubsService.updateUser(email);
+        // Always update wallet address when provided so the Privy embedded
+        // wallet address stays in sync with Supabase
+        const result = walletAddress
+          ? await HubsService.updateWalletAddress(email, walletAddress)
+          : await HubsService.updateUser(email);
         result === false
           ? res
               .status(400)
