@@ -1,5 +1,4 @@
 import dotenv from 'dotenv';
-import fetch from 'node-fetch';
 dotenv.config();
 
 export const getAllProducts = async (state: string = 'all', title: string): Promise<any> => {

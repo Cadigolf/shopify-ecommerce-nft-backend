@@ -12,7 +12,7 @@ const UserService = {
     },
     getUserByEmail: async (email: string) => {
         try {
-            const { data, error } = await supabase.from('users').select('id, email, walletaddress, updated_at').eq('email', email);
+            const { data, error } = await supabase.from('users').select('id, email, walletaddress, history, updated_at').eq('email', email);
             if (error) {
                 console.error('❌ Error getting user by email:', error);
                 return null;
