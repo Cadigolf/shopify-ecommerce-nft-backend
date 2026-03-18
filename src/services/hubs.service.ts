@@ -31,6 +31,23 @@ const HubsService = {
             return null;
         }
     },
+    updateWalletAddress: async (email: string, walletaddress: string) => {
+        try {
+            const { data, error } = await supabase.from('users').update({ walletaddress, updated_at: new Date().toISOString() }).eq('email', email);
+            if (error) {
+                console.error('❌ Error updating wallet address:', error);
+                return false;
+            }
+            const { data: userData, error: userError } = await supabase.from('users').select('id, email, walletaddress, updated_at').eq('email', email);
+            if (userError) {
+                return false;
+            }
+            return userData;
+        } catch (error) {
+            console.error('❌ Error updating wallet address:', error);
+            return null;
+        }
+    },
     updateUser: async (email: string) => {
         try {
             const { data, error } = await supabase.from('users').update({ updated_at: new Date().toISOString() }).eq('email', email);
