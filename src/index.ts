@@ -1,13 +1,14 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
-import dotenv from 'dotenv';
 import router from "./router";
 // import { SupabaseConnection } from './utils/supabase';
 import cors from 'cors';
 import { buyProductController } from './controller/nft.controller';
 import { ProductService } from './services/product.service';
 import { getAllProducts } from './utils/getAllproduct';
-dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 1001;

@@ -41,12 +41,10 @@ export const HubsAIController = {
   },
   signIn: async (req: Request, res: Response) => {
     try {
-      const { email, password } = req.body;
+      const { email } = req.body;
       const result = await HubsService.getUserByEmail(email);
       if (result === null || result.length === 0) {
         res.status(400).json({ error: "User not found", success: false });
-      } else if (result[0].password !== password) {
-        res.status(400).json({ error: "Invalid password", success: false });
       } else {
         return res
           .status(200)
