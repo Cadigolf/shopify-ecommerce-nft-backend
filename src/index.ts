@@ -13,7 +13,12 @@ import { getAllProducts } from './utils/getAllproduct';
 const app = express();
 const port = process.env.PORT || 1001;
 const corsOptions = {
-  origin: '*', // Allow all origins
+  origin: [
+    'https://shopify-ecommerce-nft-user-frontend-git-stand-up-0d18eb-hubs-ai.vercel.app',
+    'https://shopify-ecommerce-nft-merchant-frontend-git-stan-e1b2cc-hubs-ai.vercel.app',
+    'http://localhost:3000',
+    'http://localhost:3001',
+  ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'FETCH'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
