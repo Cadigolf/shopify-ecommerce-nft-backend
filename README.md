@@ -31,7 +31,6 @@ Server runs on port 1001 by default.
 |---|---|
 | `PORT` | Server port (default: 1001) |
 | `SUPABASE_URL` | Supabase project URL |
-| `SUPABASE_ANON_KEY` | Supabase publishable key |
 | `SUPABASE_USER_KEY` | Supabase secret (service role) key |
 | `SUPABASE_DB_PASSWORD` | Supabase database password |
 | `SOLANA_RPC_URL` | Solana RPC endpoint |
