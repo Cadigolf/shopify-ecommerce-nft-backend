@@ -105,3 +105,4 @@ supabase db push
 | Migration | Description |
 |---|---|
 | `20260319171628_initial_schema.sql` | Baseline schema — `users` and `tokens` tables with indexes |
+| `20260319173953_add_rls_policies.sql` | Enable RLS on `users` and `tokens` — blocks all non-service-role access |
