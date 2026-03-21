@@ -25,16 +25,21 @@ export const buyProductController = async (req: Request) => {
 
                 const userInfo = await UserService.getUserByEmail(contact_email);
                 let walletaddress = '';
-                if (userInfo && userInfo.length > 0) {
+
+                // Check checkout wallet field first
+                const checkoutWallet = note_attributes?.find((a: any) => a.name === 'walletAddress')?.value;
+                const isSolanaAddress = (addr: string) => !!addr && !addr.startsWith('0x') && addr.length >= 32 && addr.length <= 44;
+
+                if (checkoutWallet && isSolanaAddress(checkoutWallet)) {
+                    walletaddress = checkoutWallet;
+                } else if (userInfo && userInfo.length > 0 && isSolanaAddress(userInfo[0].walletaddress)) {
                     walletaddress = userInfo[0].walletaddress;
                 } else {
-                    if (note_attributes.length > 0 && note_attributes[0].name == 'walletAddress' && note_attributes[0].value !== '') {
-                        walletaddress = note_attributes[0].value;
-                    }
-                    else {
-                        const wallet = await createWallet();
-                        walletaddress = wallet.publicKey;
-                    }
+                    const wallet = await createWallet();
+                    walletaddress = wallet.publicKey;
+                }
+
+                if (!userInfo || userInfo.length === 0) {
                     await UserService.addUser(contact_email, walletaddress);
                 }
 
