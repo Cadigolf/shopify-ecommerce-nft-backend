@@ -27,7 +27,7 @@ export const getAllProducts = async (state: string = 'all', title: string): Prom
             return data.products;
         }
         else {
-            return data.products.find((product: any) => product.title === title)?.images[0].src;
+            return data.products.find((product: any) => product.title === title)?.images[0]?.src;
         }
 
     } catch (error) {
