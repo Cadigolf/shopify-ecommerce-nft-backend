@@ -16,7 +16,7 @@ export const sendMessagetoEmail = async (toEmail: string, content: string, walle
                     <div style="text-align: center; margin-bottom: 30px;">
                         <h1 style="color: #333; margin: 0; font-size: 24px;">NFT Purchase Confirmation</h1>
                         <p style="color: #666; margin: 10px 0 20px; font-size: 16px;">Thank you for your purchase</p>
-                        <a href="https://www.hubsai.io/" style="display: inline-block; text-decoration: none; font-size: 16px; padding: 10px 20px; border-radius: 4px; background-color: #357abd; color: white;">Visit HubsAI</a>
+                        <a href="${userSiteUrl}" style="display: inline-block; text-decoration: none; font-size: 16px; padding: 10px 20px; border-radius: 4px; background-color: #357abd; color: white;">View Your NFT on HubsAI</a>
                     </div>
 
                     <div style="background-color: white; padding: 25px; border-radius: 8px; margin-bottom: 20px;">
@@ -45,13 +45,13 @@ export const sendMessagetoEmail = async (toEmail: string, content: string, walle
                         <h2 style="color: #333; margin: 0 0 20px; font-size: 20px;">Viewing Your NFT</h2>
                         <ol style="color: #666; padding-left: 20px; margin: 0;">
                             <li style="margin: 10px 0;">
-                                Download Phantom Wallet from <a href="https://phantom.app/" style="color: #357abd; text-decoration: none;">phantom.app</a>
+                                Click the "View Your NFT on HubsAI" button above to go to your account
                             </li>
                             <li style="margin: 10px 0;">
-                                Create a new wallet or import using your private key
+                                Sign in with the email address you used at checkout
                             </li>
                             <li style="margin: 10px 0;">
-                                Your NFT will appear in the "Collectibles" section
+                                Your NFT will appear in your collection
                             </li>
                         </ol>
                     </div>
