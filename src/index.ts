@@ -40,6 +40,11 @@ function verifyShopifyWebhook(req: Request): boolean {
   return crypto.timingSafeEqual(Buffer.from(digest), Buffer.from(hmac));
 }
 
+// In-memory lock: prevents duplicate processing when Shopify fires the same webhook
+// more than once concurrently (before the first request writes orderid to DB).
+// The DB check in getUserProductHistoryProductId handles server-restart scenarios.
+const processingOrders = new Set<string>();
+
 // Webhook route must be registered before global body parsers to capture raw body
 app.post(
   '/webhooks/orders/paid',
@@ -54,15 +59,22 @@ app.post(
     try {
       res.status(200).json({ message: 'Webhook received' });
       console.log("--------------------------------  Order received  --------------------------------");
+
+      const orderId = String(req.body.id);
+      if (processingOrders.has(orderId)) {
+        console.log(`⚠️ Duplicate webhook for order ${orderId} — already processing, skipping`);
+        return;
+      }
+      processingOrders.add(orderId);
+
       const result = await ProductService.getUserProductHistoryProductId(req.body.contact_email, req.body.id);
       if (result) {
         await buyProductController(req);
       } else {
-        res.status(400).json({ message: 'already purchased' });
+        console.log(`⚠️ Order ${orderId} already recorded in DB for ${req.body.contact_email}, skipping`);
       }
     } catch (error) {
       console.error('Error processing webhook:', error);
-      res.status(500).json({ error: 'Internal server error' });
     }
   }
 );
