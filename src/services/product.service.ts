@@ -1,7 +1,7 @@
 import { supabase } from "../utils/supabase";
 
 export const ProductService = {
-    saveUserProductHistory: async (userEmail: string, userProduct: any, id: string) => {
+    saveUserProductHistory: async (userEmail: string, userProduct: any, id: string, status: string = 'claimed') => {
         try {
             // Validate input
             if (!userEmail || !userProduct || !id) {
@@ -28,10 +28,10 @@ export const ProductService = {
             }
             let existingHistory: any[] = [];
             if (existingUser?.history) {
-                existingHistory = [...existingUser.history, { ...userProduct, buyDate: new Date().toISOString() }];
+                existingHistory = [...existingUser.history, { ...userProduct, buyDate: new Date().toISOString(), status }];
             }
             else {
-                existingHistory = [userProduct];
+                existingHistory = [{ ...userProduct, buyDate: new Date().toISOString(), status }];
             }
             const { data, error: updateError } = await supabase.from('users')
                 .update({ history: existingHistory })
@@ -66,6 +66,54 @@ export const ProductService = {
         } catch (error) {
             console.error('❌ Error getting user product history:', error);
             return false;
+        }
+    },
+    getPendingClaimNFTs: async (email: string) => {
+        try {
+            const { data: existingUser, error: fetchError } = await supabase.from('users')
+                .select('history')
+                .eq('email', email)
+                .single();
+
+            if (fetchError || !existingUser?.history) {
+                return [];
+            }
+
+            return existingUser.history.filter((item: any) => item.status === 'pending_claim');
+        } catch (error) {
+            console.error('❌ Error getting pending claim NFTs:', error);
+            return [];
+        }
+    },
+    updateHistoryEntryStatus: async (email: string, mintAddress: string, status: string) => {
+        try {
+            const { data: existingUser, error: fetchError } = await supabase.from('users')
+                .select('history')
+                .eq('email', email)
+                .single();
+
+            if (fetchError) {
+                throw new Error(`Failed to fetch user history: ${fetchError.message}`);
+            }
+
+            if (!existingUser?.history) {
+                return;
+            }
+
+            const updatedHistory = existingUser.history.map((item: any) =>
+                item.mintAddress === mintAddress ? { ...item, status } : item
+            );
+
+            const { error: updateError } = await supabase.from('users')
+                .update({ history: updatedHistory })
+                .eq('email', email);
+
+            if (updateError) {
+                throw new Error(`Failed to update history entry status: ${updateError.message}`);
+            }
+        } catch (error) {
+            console.error('❌ Error updating history entry status:', error);
+            throw error;
         }
     },
     deleteUserProductHistory: async (userEmail: string, nftAddress: string) => {

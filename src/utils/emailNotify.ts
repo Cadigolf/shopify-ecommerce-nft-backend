@@ -5,7 +5,7 @@ dotenv.config();
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export const sendMessagetoEmail = async (toEmail: string, content: string, walletAddress: string, userSiteUrl: string) => {
+export const sendMessagetoEmail = async (toEmail: string, content: string, walletAddress: string, userSiteUrl: string, isPending: boolean = false) => {
     const { error } = await resend.emails.send({
         from: process.env.RESEND_FROM ?? 'HubsAI <noreply@hubsai.smittyworks.com>',
         to: toEmail,
@@ -25,6 +25,21 @@ export const sendMessagetoEmail = async (toEmail: string, content: string, walle
                         <p style="margin: 0;"><a href="${content}" style="color: #357abd; text-decoration: none;">View your NFT</a></p>
                     </div>
 
+                    ${isPending ? `
+                    <div style="background-color: white; padding: 25px; border-radius: 8px; margin-bottom: 20px;">
+                        <h2 style="color: #333; margin: 0 0 20px; font-size: 20px;">Claim Your NFT</h2>
+                        <p style="color: #666; margin: 0 0 10px;">Your NFT has been minted and is held securely. Log in to your HubsAI account to transfer it to your wallet:</p>
+                        <p style="margin: 0;"><a href="${userSiteUrl}" style="color: #357abd; text-decoration: none; font-weight: bold;">Log in to claim your NFT &rarr;</a></p>
+                    </div>
+
+                    <div style="background-color: white; padding: 25px; border-radius: 8px; margin-bottom: 20px;">
+                        <h2 style="color: #333; margin: 0 0 20px; font-size: 20px;">How to claim</h2>
+                        <ol style="color: #666; padding-left: 20px; margin: 0;">
+                            <li style="margin: 10px 0;">Click the button above or the "View Your NFT on HubsAI" link</li>
+                            <li style="margin: 10px 0;">Sign in with the email address you used at checkout</li>
+                            <li style="margin: 10px 0;">Your NFT will be transferred to your wallet automatically</li>
+                        </ol>
+                    </div>` : `
                     <div style="background-color: white; padding: 25px; border-radius: 8px; margin-bottom: 20px;">
                         <h2 style="color: #333; margin: 0 0 20px; font-size: 20px;">Wallet Information</h2>
                         <p style="color: #666; margin: 0 0 10px;">Your wallet address:</p>
@@ -32,29 +47,13 @@ export const sendMessagetoEmail = async (toEmail: string, content: string, walle
                     </div>
 
                     <div style="background-color: white; padding: 25px; border-radius: 8px; margin-bottom: 20px;">
-                        <h2 style="color: #333; margin: 0 0 20px; font-size: 20px;">Important Security Information</h2>
-                        <ul style="color: #666; padding-left: 20px; margin: 0;">
-                            <li style="margin: 10px 0;">Never share your private key with anyone</li>
-                            <li style="margin: 10px 0;">Store your private key securely using a password manager</li>
-                            <li style="margin: 10px 0;">Consider using a hardware wallet for additional security</li>
-                            <li style="margin: 10px 0;">Enable two-factor authentication on your accounts</li>
-                        </ul>
-                    </div>
-
-                    <div style="background-color: white; padding: 25px; border-radius: 8px; margin-bottom: 20px;">
                         <h2 style="color: #333; margin: 0 0 20px; font-size: 20px;">Viewing Your NFT</h2>
                         <ol style="color: #666; padding-left: 20px; margin: 0;">
-                            <li style="margin: 10px 0;">
-                                Click the "View Your NFT on HubsAI" button above to go to your account
-                            </li>
-                            <li style="margin: 10px 0;">
-                                Sign in with the email address you used at checkout
-                            </li>
-                            <li style="margin: 10px 0;">
-                                Your NFT will appear in your collection
-                            </li>
+                            <li style="margin: 10px 0;">Click the "View Your NFT on HubsAI" button above to go to your account</li>
+                            <li style="margin: 10px 0;">Sign in with the email address you used at checkout</li>
+                            <li style="margin: 10px 0;">Your NFT will appear in your collection</li>
                         </ol>
-                    </div>
+                    </div>`}
 
                     <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
                         <p style="color: #666; font-size: 14px; margin: 0 0 10px;">For support inquiries, please contact:</p>
