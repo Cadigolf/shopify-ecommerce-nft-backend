@@ -1,5 +1,32 @@
 import { Request, Response } from "express";
 import HubsService from "../services/hubs.service";
+import { ProductService } from "../services/product.service";
+import { transferNFT } from "../utils/solana";
+
+const isSolanaAddress = (addr: string) =>
+  !!addr && !addr.startsWith('0x') && addr.length >= 32 && addr.length <= 44;
+
+// Fire-and-forget: transfer any pending_claim NFTs from treasury to the user's wallet
+const transferPendingNFTs = (email: string, walletAddress: string): void => {
+  ProductService.getPendingClaimNFTs(email).then(async (pendingNFTs: any[]) => {
+    if (!pendingNFTs || pendingNFTs.length === 0) return;
+    for (const nft of pendingNFTs) {
+      try {
+        const success = await transferNFT(nft.mintAddress, walletAddress);
+        if (success) {
+          await ProductService.updateHistoryEntryStatus(email, nft.mintAddress, 'claimed');
+          console.log(`✅ Pending NFT ${nft.mintAddress} transferred to ${walletAddress}`);
+        } else {
+          console.error(`❌ Failed to transfer pending NFT ${nft.mintAddress} — will retry on next login`);
+        }
+      } catch (err) {
+        console.error(`❌ Error transferring pending NFT ${nft.mintAddress}:`, err);
+      }
+    }
+  }).catch((err: any) => {
+    console.error('❌ Error checking pending NFTs:', err);
+  });
+};
 
 export const HubsAIController = {
   signUp: async (req: Request, res: Response) => {
@@ -8,32 +35,30 @@ export const HubsAIController = {
       const existingUser = await HubsService.getUserByEmail(email);
       if (!existingUser || existingUser.length === 0) {
         const result = await HubsService.addUser(email, walletAddress || '');
-        result === null || result === false
-          ? res.status(400).json({ message: "User Add failed", success: false })
-          : res
-              .status(200)
-              .json({
-                message: "User added successfully",
-                result: Array.isArray(result) ? result[0] : result,
-                success: true,
-              });
+        if (result === null || result === false) {
+          return res.status(400).json({ message: "User Add failed", success: false });
+        }
+        if (isSolanaAddress(walletAddress)) transferPendingNFTs(email, walletAddress);
+        return res.status(200).json({
+          message: "User added successfully",
+          result: Array.isArray(result) ? result[0] : result,
+          success: true,
+        });
       } else {
         // Always update wallet address when provided so the Privy embedded
         // wallet address stays in sync with Supabase
         const result = walletAddress
           ? await HubsService.updateWalletAddress(email, walletAddress)
           : await HubsService.updateUser(email);
-        result === false
-          ? res
-              .status(400)
-              .json({ message: "User Update failed", success: false })
-          : res
-              .status(200)
-              .json({
-                message: "User updated successfully",
-                result: Array.isArray(result) ? result[0] : result,
-                success: true,
-              });
+        if (result === false) {
+          return res.status(400).json({ message: "User Update failed", success: false });
+        }
+        if (isSolanaAddress(walletAddress)) transferPendingNFTs(email, walletAddress);
+        return res.status(200).json({
+          message: "User updated successfully",
+          result: Array.isArray(result) ? result[0] : result,
+          success: true,
+        });
       }
     } catch (error) {
       console.error("❌ Error adding user:", error);

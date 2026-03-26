@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { createWallet, mintNFT, transferNFT } from '../utils/solana';
+import { mintNFT, transferNFT } from '../utils/solana';
 import { sendMessagetoEmail } from '../utils/emailNotify';
 import { ProductService } from '../services/product.service';
 import UserService from '../services/user.service';
@@ -25,6 +25,7 @@ export const buyProductController = async (req: Request) => {
 
                 const userInfo = await UserService.getUserByEmail(contact_email);
                 let walletaddress = '';
+                let isPendingClaim = false;
 
                 // Check checkout wallet field first
                 const checkoutWallet = note_attributes?.find((a: any) => a.name === 'walletAddress')?.value;
@@ -35,8 +36,8 @@ export const buyProductController = async (req: Request) => {
                 } else if (userInfo && userInfo.length > 0 && isSolanaAddress(userInfo[0].walletaddress)) {
                     walletaddress = userInfo[0].walletaddress;
                 } else {
-                    const wallet = await createWallet();
-                    walletaddress = wallet.publicKey;
+                    // No wallet available — NFT will stay in treasury until user logs in
+                    isPendingClaim = true;
                 }
 
                 if (!userInfo || userInfo.length === 0) {
@@ -50,11 +51,14 @@ export const buyProductController = async (req: Request) => {
                     throw new Error('Failed to mint NFT');
                 }
 
-                await ProductService.saveUserProductHistory(contact_email, { ...productMetadata, mintAddress }, id);
-                await new Promise(resolve => setTimeout(resolve, 15000));
-                const transfer = await transferNFT(mintAddress, walletaddress);
-                if (!transfer) {
-                    throw new Error('Failed to transfer NFT');
+                await ProductService.saveUserProductHistory(contact_email, { ...productMetadata, mintAddress }, id, isPendingClaim ? 'pending_claim' : 'claimed');
+
+                if (!isPendingClaim) {
+                    await new Promise(resolve => setTimeout(resolve, 15000));
+                    const transfer = await transferNFT(mintAddress, walletaddress);
+                    if (!transfer) {
+                        throw new Error('Failed to transfer NFT');
+                    }
                 }
 
                 try {
@@ -62,7 +66,8 @@ export const buyProductController = async (req: Request) => {
                         contact_email,
                         `https://explorer.solana.com/address/${mintAddress}?cluster=devnet`,
                         walletaddress,
-                        `${process.env.USER_SITE_URL}?id=${id}`
+                        `${process.env.USER_SITE_URL}?id=${id}`,
+                        isPendingClaim
                     );
                 } catch (emailError) {
                     console.error('Email sending failed:', emailError);
