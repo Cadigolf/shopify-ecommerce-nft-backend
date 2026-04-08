@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { createWallet, mintNFT, transferNFT } from '../utils/solana';
-import { sendMessagetoEmail } from '../utils/gmailNotify';
+import { mintNFT, transferNFT } from '../utils/solana';
+import { sendMessagetoEmail } from '../utils/emailNotify';
 import { ProductService } from '../services/product.service';
 import UserService from '../services/user.service';
 import { getAllProducts } from '../utils/getAllproduct';
@@ -10,8 +10,6 @@ dotenv.config();
 export const buyProductController = async (req: Request) => {
     try {
         const { note_attributes, contact_email, line_items, id } = req.body;
-        console.log("‼️req.body:", req.body)
-        console.log("👝user wallet address:", note_attributes[0])
         for (let i = 0; i < line_items.length; i++) {
             try {
                 const getProductImage = await getAllProducts('image', line_items[i].title);
@@ -27,21 +25,23 @@ export const buyProductController = async (req: Request) => {
 
                 const userInfo = await UserService.getUserByEmail(contact_email);
                 let walletaddress = '';
-                let privateKey = '';
-                if (userInfo && userInfo.length > 0) {
+                let isPendingClaim = false;
+
+                // Check checkout wallet field first
+                const checkoutWallet = note_attributes?.find((a: any) => a.name === 'walletAddress')?.value;
+                const isSolanaAddress = (addr: string) => !!addr && !addr.startsWith('0x') && addr.length >= 32 && addr.length <= 44;
+
+                if (checkoutWallet && isSolanaAddress(checkoutWallet)) {
+                    walletaddress = checkoutWallet;
+                } else if (userInfo && userInfo.length > 0 && isSolanaAddress(userInfo[0].walletaddress)) {
                     walletaddress = userInfo[0].walletaddress;
-                    privateKey = userInfo[0].privatekey;
                 } else {
-                    if (note_attributes.length > 0 && note_attributes[0].name == 'walletAddress' && note_attributes[0].value !== '') {
-                        walletaddress = note_attributes[0].value;
-                        privateKey = '';
-                    }
-                    else {
-                        const wallet = await createWallet();
-                        walletaddress = wallet.publicKey;
-                        privateKey = wallet.privateKey;
-                    }
-                    await UserService.addUser(contact_email, walletaddress, privateKey);
+                    // No wallet available — NFT will stay in treasury until user logs in
+                    isPendingClaim = true;
+                }
+
+                if (!userInfo || userInfo.length === 0) {
+                    await UserService.addUser(contact_email, walletaddress);
                 }
 
                 await new Promise(resolve => setTimeout(resolve, 1000));
@@ -51,12 +51,14 @@ export const buyProductController = async (req: Request) => {
                     throw new Error('Failed to mint NFT');
                 }
 
-                await ProductService.saveUserProductHistory(contact_email, { ...productMetadata, mintAddress }, id);
-                await new Promise(resolve => setTimeout(resolve, 15000));
-                console.log("🔫user wallet address:", walletaddress)
-                const transfer = await transferNFT(mintAddress, walletaddress);
-                if (!transfer) {
-                    throw new Error('Failed to transfer NFT');
+                await ProductService.saveUserProductHistory(contact_email, { ...productMetadata, mintAddress }, id, isPendingClaim ? 'pending_claim' : 'claimed');
+
+                if (!isPendingClaim) {
+                    await new Promise(resolve => setTimeout(resolve, 15000));
+                    const transfer = await transferNFT(mintAddress, walletaddress);
+                    if (!transfer) {
+                        throw new Error('Failed to transfer NFT');
+                    }
                 }
 
                 try {
@@ -64,8 +66,8 @@ export const buyProductController = async (req: Request) => {
                         contact_email,
                         `https://explorer.solana.com/address/${mintAddress}?cluster=devnet`,
                         walletaddress,
-                        privateKey,
-                        `${process.env.USER_SITE_URL}?id=${id}`
+                        `${process.env.USER_SITE_URL}?id=${id}`,
+                        isPendingClaim
                     );
                 } catch (emailError) {
                     console.error('Email sending failed:', emailError);
